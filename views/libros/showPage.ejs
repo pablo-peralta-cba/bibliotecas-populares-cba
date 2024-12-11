@@ -1,0 +1,38 @@
+
+<% layout('./layouts/boilerplate') %>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+        <div class="row">
+            
+    <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+                <div class="card shadow">
+                    
+                    <img src="https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/jessica-ruscello-OQSCtabGkSY-unsplash_tgln9i.jpg"
+                    alt="" class="card-img-top" /> 
+                <div class="card-body p-4">
+                    <h2><%= libro.titulo %></h2>
+    <p><strong>Autor:</strong> <%= libro.autor %></p>
+    <p><strong>Código de Catálogo:</strong> <%= libro.codigoCat %></p>
+    <p><strong>Género:</strong> <%= libro.genero || 'No especificado' %></p>
+    <p><strong>Año de Publicación:</strong> <%= libro.publishYear || 'No especificado' %></p>
+    <p><strong>Biblioteca:</strong> <%= libro.biblioteca.nombre || 'No especificado' %></p>
+
+    <!-- acá verificamos si el usuario logueado es el autor del biblioteca, -->
+                <!-- si no lo es, ocultamos los botones editar y borrar, para que solo el autor -->
+                <!-- acceda a esas funciones  -->
+                <% if (biblioteca && biblioteca.autor && currentUser && biblioteca.autor.equals(currentUser._id)) {%>
+    <div>
+        <a class="btn btn-info" href="/bibliotecas/<%= biblioteca._id %>/libros/<%= libro._id %>/editar" role="button">Editar Libro</a>
+        <form action="/bibliotecas/<%= biblioteca._id %>/libros/<%= libro._id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Eliminar Libro</button>
+        </form>
+    </div>
+    <% } %>
+    <a class="btn btn-primary btn-sm mb-2" href="/libros">Volver al Catálogo</a>  
+                        </div>
+
+                </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>

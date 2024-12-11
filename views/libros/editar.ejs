@@ -1,0 +1,35 @@
+<% layout('./layouts/boilerplate') %>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        
+<div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+    <div class="card shadow">
+        <img src="https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/jessica-ruscello-OQSCtabGkSY-unsplash_tgln9i.jpg"
+        alt="" class="card-img-top" /> 
+        <div class="card-body">
+
+<form action="/bibliotecas/<%= bibliotecaId %>/libros/<%= libro._id %>?_method=PUT" method="POST">
+    <label class="form-label" for="titulo">Título:</label>
+    <input class="form-control" type="text" name="libro[titulo]" value="<%= libro.titulo %>" required>
+<br>
+    <label class="form-label" for="autor">Autor:</label>
+    <input class="form-control" type="text" name="libro[autor]" value="<%= libro.autor %>" required>
+    <br>
+    <label class="form-label" for="codigoCat">Código de Catálogo:</label>
+    <input class="form-control" type="text" name="libro[codigoCat]" value="<%= libro.codigoCat %>" required>
+    <br>
+    <label class="form-label" for="genero">Género:</label>
+    <input class="form-control" type="text" name="libro[genero]" value="<%= libro.genero %>">
+    <br>
+    <label class="form-label" for="publishYear">Año de Publicación:</label>
+    <input class="form-control" type="number" name="libro[publishYear]" value="<%= libro.publishYear %>">
+    <br>
+    
+    <button class="btn btn-success" type="submit">Actualizar Libro</button>
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,167 @@
+<% const title = biblioteca.nombre %>
+<% layout('layouts/boilerplate') %>
+    <div class="row">
+        <h1 class="text-center">Editar Biblioteca</h1>
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow">
+                <div class="card-body">
+            <form action="/bibliotecas/<%= biblioteca._id %>?_method=PUT" method="POST" novalidate class="validated-form"
+                enctype="multipart/form-data"> 
+                <div class="mb-3">
+                    <label class="form-label" id="nombre">Nombre</label>
+                    <input class="form-control" type="text" name="biblioteca[nombre]" id="nombre"
+                        value="<%= biblioteca.nombre %>" required>
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="direccion">Dirección</label>
+                    <input class="form-control" type="text" name="biblioteca[direccion]" id="direccion"
+                        value="<%= biblioteca.direccion %>" required>
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="localidad">Localidad</label>
+                    <input class="form-control" type="text" name="biblioteca[localidad]" id="localidad"
+                        value="<%= biblioteca.localidad %>" required>
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+                </div>
+                <div class="mb-3">
+                <h3>Coordenadas de la Biblioteca (opcional)</h3>
+                <div>
+                    <label for="longitude">Longitud:</label>
+                    <input type="number" step="any" name="biblioteca[geometry][coordinates][0]" placeholder="Longitud (ej: -63.875738)" value="<%= biblioteca.geometry.coordinates[0] %>">
+                    <br>
+                    <label for="latitude">Latitud:</label>
+                    <input type="number" step="any" name="biblioteca[geometry][coordinates][1]" placeholder="Latitud (ej: -31.675234)" value="<%= biblioteca.geometry.coordinates[1] %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="telefono">Teléfono:</label>
+                    <input class="form-control" type="text" id="telefono" name="biblioteca[telefono]" required pattern="^(?:[1-9]\d{2}|[1-9]\d{3})\d{7}$" 
+                    title="Formato: Código de área de 3 o 4 cifras seguido de 7 cifras" value="<%= biblioteca.telefono %>">
+                </div>   
+                    <label for="opcionesTelefono">Opciones de teléfono:</label>
+                    <select class="form-control" id="opcionesTelefono" name="biblioteca[opcionesTelefono]" value="<%=biblioteca.opcionesTelefono %>">
+                        <option value="Solo llamadas">Solo llamadas</option>
+                        <option value="Llamadas y WhatsApp">Llamadas y WhatsApp</option>
+                        <option value="Solo WhatsApp">Solo WhatsApp</option>
+                    </select>
+                    <div class="mb-3">
+                        <label class="form-label">Redes Sociales:</label>
+                        <div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" id="IG" type="checkbox" name="biblioteca[redes][0][checked]" value="true">
+                                    <label class="form-check-label" for="IG"> Instagram</label>
+                                </div>
+                                <input type="text" class="form-control" name="biblioteca[redes][0][link]" placeholder="Usuario de Instagram" value="<%= (biblioteca.redes && biblioteca.redes[0] && biblioteca.redes[0].link) ? biblioteca.redes[0].link : '' %>">
+                                <input type="hidden" name="biblioteca[redes][0][nombre]" value="instagram">
+                                <!-- <input type="hidden" name="biblioteca[redes][0][checked]" value="false"> Añadido para el caso de que no esté marcado -->
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" id="FB" type="checkbox" name="biblioteca[redes][1][checked]" value="true">
+                                    <label class="form-check-label" for="FB"> Facebook</label>
+                                </div>
+                                <input type="text" class="form-control" name="biblioteca[redes][1][link]" placeholder="Usuario de Facebook" value="<%= (biblioteca.redes && biblioteca.redes[1] && biblioteca.redes[1].link) ? biblioteca.redes[1].link : '' %>">
+                                <input type="hidden" name="biblioteca[redes][1][nombre]" value="facebook">
+                                <!-- <input type="hidden" name="biblioteca[redes][1][checked]" value="false"> Añadido -->
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" id="X" type="checkbox" name="biblioteca[redes][2][checked]" value="true">
+                                    <label class="form-check-label" for="X">X (Twitter)</label>
+                                </div>
+                                <input type="text" class="form-control" name="biblioteca[redes][2][link]" placeholder="Usuario de X" value="<%= (biblioteca.redes && biblioteca.redes[2] && biblioteca.redes[2].link) ? biblioteca.redes[2].link : '' %>">
+                                <input type="hidden" name="biblioteca[redes][2][nombre]" value="X">
+                                <!-- <input type="hidden" name="biblioteca[redes][2][checked]" value="false"> Añadido -->
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" id="mail" type="checkbox" name="biblioteca[redes][3][checked]" value="true">
+                                    <label class="form-check-label" for="mail">E-mail</label>
+                                </div>
+                               
+                                <input type="email" class="form-control" name="biblioteca[redes][3][link]" pattern=".*@.*" placeholder="Ingresa tu email" value="<%= (biblioteca.redes && biblioteca.redes[3] && biblioteca.redes[3].link) ? biblioteca.redes[3].link : '' %>">
+                                <input type="hidden" name="biblioteca[redes][3][nombre]" value="mail">
+                                <!-- <input type="hidden" name="biblioteca[redes][3][checked]" value="false"> Añadido -->
+                                <div class="invalid-feedback">Por favor, ingresa un email válido que contenga '@'.</div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="mb-3">
+                    <label class="form-label" for="registroConabip">Registro CONABIP</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="registroConabip"></span>
+                        <input name="biblioteca[registroConabip]" type="number" placeholder="0.00" id="registroConabip" class="form-control"
+                         value="<%= biblioteca.registroConabip %>" required>
+                        <div class="valid-feedback">
+                            ¡Genial!
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="actividades">Actividades</label>
+                    <textarea class="form-control" type="text" name="biblioteca[actividades]" id="actividades" value="<%= biblioteca.actividades %>"
+                        required><%= biblioteca.actividades %></textarea>
+                </div>
+                <div class="mb-3">
+                <label class="form-label" for="atencion">Atención al público</label>
+            <textarea class="form-control" type="text" name="biblioteca[horario]"
+            id="atencion" value="<%= biblioteca.horario %>" required><%= biblioteca.horario %></textarea>
+    
+                        <div class="valid-feedback">
+                            ¡Genial!
+                        </div>
+
+                    </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Agregar imágenes</label>
+                    <input class="form-control" type="file" name="image" id="image" multiple>
+                
+                    <% biblioteca.images.forEach(function (img, i) { %>
+                        <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="">
+
+                        <div class="form-check-inline">
+                            <label for="image-<%=i%>">Borrar?</label>
+                            <input type="checkbox" id="image-<%= i %>" name="deleteImages[]"
+                                value="<%= img.filename %>">
+                        </div>
+
+                        <% }) %>
+                    </div>
+                </div>
+           
+                <button type="button" id="add-libro">Agregar Otro Libro</button>
+                <button class="remove-book-btn">Eliminar</button> 
+             </div>
+                <div class="mb-3">
+                    <button class="btn btn-info btn-block">Editar biblioteca</button>
+                </div>
+            </form>
+            <div>
+            <a href="/bibliotecas/<%= biblioteca._id %>/libros/nuevo">Agregar Libro</a>
+            </div>
+            <div>
+                <a href="/bibliotecas/<%= biblioteca._id %>">Volver al biblioteca</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    // Ejemplo de código para habilitar el campo de valor de cuota si está marcada la cuota
+    document.getElementById('cuota').addEventListener('change', function() {
+        document.getElementById('valorCuota').disabled = !this.checked;
+    });
+</script>
+
+

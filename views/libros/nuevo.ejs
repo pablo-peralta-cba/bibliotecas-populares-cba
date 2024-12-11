@@ -1,0 +1,53 @@
+<% const title = "Cargar nuevo libro" %>
+<% layout('./layouts/boilerplate') %>
+    <div class="container d-flex justify-content-center align-items-center mt-5">
+        <div class="row">
+            
+    <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+        <div class="card shadow">
+            <img src="https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/jessica-ruscello-OQSCtabGkSY-unsplash_tgln9i.jpg"
+            alt="" class="card-img-top" /> 
+            <div class="card-body">
+<h3 class="card-title text-center">Agregar Nuevo Libro</h3>     
+
+    <form action="/bibliotecas/<%= biblioteca._id %>/libros" method="POST">
+        <div>
+            <label class="form-label" for="libro[titulo]">Título:</label>
+            <input class="form-control" type="text" name="libro[titulo]" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="libro[autor]">Autor:</label>
+            <input class="form-control" type="text" name="libro[autor]" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="libro[codigoCat]">Código de Catálogo:</label>
+            <input class="form-control" type="text" name="libro[codigoCat]" required>
+        </div>
+
+        <div>
+            <label class="form-label" for="libro[genero]">Género:</label>
+            <input class="form-control" type="text" name="libro[genero]">
+        </div>
+
+        <div>
+            <label class="form-label" for="libro[publishYear]">Año de Publicación:</label>
+            <input class="form-control" type="number" name="libro[publishYear]">
+        </div>
+<br>
+        <button class="btn btn-success" type="submit">Agregar Libro</button>
+    </form>
+
+    <a href="/bibliotecas/<%= biblioteca._id %>">Volver a la Biblioteca</a>
+
+
+
+    
+
+    
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>

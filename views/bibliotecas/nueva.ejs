@@ -1,0 +1,213 @@
+
+
+
+<% const title = 'Cargar nueva biblioteca' %>
+<% layout('./layouts/boilerplate') %>
+    <div class="row">
+        <h1 class="text-center">Registrá tu Biblioteca Popular</h1>
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow">
+          <div class="card-body">
+            <!-- we add enctype multipart/form-data to change the form, so it accepts files like imgs  -->
+            <form action="/bibliotecas" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label" id="nombre">Nombre</label>
+                    <input class="form-control" type="text" name="biblioteca[nombre]" id="nombre" required>
+                    <!-- Agregar este div para ofrecer feedback al usuario cuando rellena cada campo/input  -->
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="localidad">Localidad</label>
+                    <input class="form-control" type="text" name="biblioteca[localidad]" id="localidad" required>
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+                </div>
+                <div class="mb-3">
+                <h5>Coordenadas de la Biblioteca (opcional)</h5>
+                    <div>
+                        <label for="longitude">Longitud:</label>
+                        <input type="number" step="any" name="biblioteca[geometry][coordinates][0]" placeholder="Longitud (ej: -63.875738)">
+                        <br>
+                        <br>
+                        <label for="latitude">Latitud:</label>
+                        <input type="number" step="any" name="biblioteca[geometry][coordinates][1]" placeholder="Latitud (ej: -31.675234)">
+                    </div>
+                </div>
+                <div class="mb-3">
+                <label class="form-label" for="direccion">Dirección</label>
+                <input class="form-control" type="text" name="biblioteca[direccion]" id="direccion" required>
+                <div class="valid-feedback">
+                    ¡Genial!
+                </div>
+            </div>
+            <div class="mb-3">
+            <label class="form-label" for="horario">Atención al público</label>
+            <textarea  class="form-control" type="text" name="biblioteca[horario]" placeholder="Ej: Lunes a viernes, 14 a 18hs"
+            id="horario"></textarea>
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+            </div>
+            <div class="mb-3">
+                          <label class="form-label" for="cuota">¿Hay cuota?</label>
+                <input type="checkbox" id="cuota" name="cuota.existe">
+
+        <label class="form-label" for="valorCuota">Valor de la cuota:</label>
+        <input class="form-control" type="number" id="valorCuota" name="cuota.valor" min="0" placeholder="0" disabled>
+                        <div class="valid-feedback">
+                            ¡Genial!
+                        </div>
+                    </div>
+    
+
+                <div class="mb-3">
+        <label class="form-label" for="telefono">Teléfono:</label>
+        <input class="form-control" type="text" id="telefono" name="biblioteca[telefono]" required pattern="^(?:[1-9]\d{2}|[1-9]\d{3})\d{7}$" 
+        title="Formato: Código de área de 3 o 4 cifras seguido de 7 cifras">
+    </div>   
+        <label for="opcionesTelefono">Opciones de teléfono:</label>
+        <select class="form-control" id="opcionesTelefono" name="biblioteca[opcionesTelefono]" required>
+            <option value="Solo llamadas">Solo llamadas</option>
+            <option value="Llamadas y WhatsApp">Llamadas y WhatsApp</option>
+            <option value="Solo WhatsApp">Solo WhatsApp</option>
+        </select>
+    
+        <br>
+
+        <div class="mb-3">
+            <label class="form-label">Redes Sociales:</label>
+            <div>
+                <div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" id="IG" type="checkbox" name="biblioteca[redes][0][checked]" value="true">
+                        <label class="form-check-label" for="IG"> Instagram</label>
+                    </div>
+                    <input type="text" class="form-control" name="biblioteca[redes][0][link]" placeholder="Usuario de Instagram" value="">
+                    <input type="hidden" name="biblioteca[redes][0][nombre]" value="instagram">
+                    <!-- <input type="hidden" name="biblioteca[redes][0][checked]" value="false"> -->
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" id="FB" type="checkbox" name="biblioteca[redes][1][checked]" value="true">
+                        <label class="form-check-label" for="FB"> Facebook</label>
+                    </div>
+                    <input type="text" class="form-control" name="biblioteca[redes][1][link]" placeholder="Usuario de Facebook" value="">
+                    <input type="hidden" name="biblioteca[redes][1][nombre]" value="facebook">
+                    <!-- <input type="hidden" name="biblioteca[redes][1][checked]" value="false"> -->
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" id="X" type="checkbox" name="biblioteca[redes][2][checked]" value="true">
+                        <label class="form-check-label" for="X">X (Twitter)</label>
+                    </div>
+                    <input type="text" class="form-control" name="biblioteca[redes][2][link]" placeholder="Usuario de X" value="">
+                    <input type="hidden" name="biblioteca[redes][2][nombre]" value="X">
+                    <!-- <input type="hidden" name="biblioteca[redes][2][checked]" value="false"> -->
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" id="mail" type="checkbox" name="biblioteca[redes][3][checked]" value="true">
+                        <label class="form-check-label" for="mail">E-mail</label>
+                    </div>
+                   
+                    <input type="email" class="form-control" name="biblioteca[redes][3][link]" pattern=".*@.*" placeholder="Ingresa tu email" value="">
+                    <input type="hidden" name="biblioteca[redes][3][nombre]" value="mail">
+                    <!-- <input type="hidden" name="biblioteca[redes][3][checked]" value="false"> -->
+                    <div class="invalid-feedback">Por favor, ingresa un email válido que contenga '@'.</div>
+                </div>
+            </div>
+        </div>
+        
+
+                <div class="mb-3">
+                    <label class="form-label" for="actividades">Actividades</label>
+                    <textarea required class="form-control" type="text" name="biblioteca[actividades]" placeholder="Ej: Lectura, Talleres"
+                        id="actividades"></textarea>
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                <label for="registroConabip">Registro CONABIP</label>
+                <input type="number" id="registroConabip" name="biblioteca[registroConabip]" required>
+                <div class="valid-feedback">
+                    ¡Genial!
+                </div>
+            </div>
+
+                <div class="mb-3">
+                    <div class="form-file custom-file">
+                    <label class="form-file-label btn-sm btn-info d-inline text-center" for="images">Cargar Imágenes</label>
+                    <input class="form-file-input" type="file" id="images" name="image" accept="image/*" multiple>
+            </div>
+                        <!-- <label for="image">
+                            <span class="form-file-text custom-file-label">Elige tus imágenes</span>
+                            <span class="form-file-button">Subir</span>
+                        </label> -->
+                    </div>
+<br>
+
+                    <div class="mb-3">
+                        <button class="btn btn-block btn-success">Cargar la nueva biblioteca</button>
+                    </div>
+            </form>
+            <!-- <div>
+                <a href="/libros/nuevo">Agregar Libro</a>
+            </div> -->
+            <div>
+                <a href="/bibliotecas">Ver todas las bibliotecas</a>
+            </div>
+        </div>
+            
+    </div>
+</div>
+
+        </div>
+    </div>
+
+
+    <script>
+        let libroCount = 1; // Inicia en 1 porque ya tienes un libro en el formulario
+    
+        document.getElementById('add-libro').addEventListener('click', function() {
+            const container = document.getElementById('libros-container');
+            const newLibro = document.createElement('div');
+            newLibro.classList.add('libro');
+            newLibro.innerHTML = `
+                <label for="titulo-${libroCount}">Título:</label>
+                <input type="text" id="titulo-${libroCount}" name="biblioteca[catalogoLibros][${libroCount}][titulo]" required>
+                <br>
+                <label for="autor-${libroCount}">Autor:</label>
+                <input type="text" id="autor-${libroCount}" name="biblioteca[catalogoLibros][${libroCount}][autor]" required>
+                <br>
+                <label for="codigoCat-${libroCount}">Código de Catálogo:</label>
+                <input type="text" id="codigoCat-${libroCount}" name="biblioteca[catalogoLibros][${libroCount}][codigoCat]">
+                <br>
+                <label for="genero-${libroCount}">Género:</label>
+                <input type="text" id="genero-${libroCount}" name="biblioteca[catalogoLibros][${libroCount}][genero]" placeholder="Género">
+                <br>
+                <label for="publishYear-${libroCount}">Año de publicación:</label>
+                <input type="number" id="publishYear-${libroCount}" name="biblioteca[catalogoLibros][${libroCount}][publishYear]" placeholder="Año de Publicación" min="1750">
+            `;
+            container.appendChild(newLibro);
+            libroCount++; // Incrementa el contador para el próximo libro
+        });
+    </script>
+
+<script>
+    // Ejemplo de código para habilitar el campo de valor de cuota si está marcada la cuota
+    document.getElementById('cuota').addEventListener('change', function() {
+        document.getElementById('valorCuota').disabled = !this.checked;
+    });
+</script>
+        
+
+
+
+
+
+

@@ -1,0 +1,43 @@
+#cluster-map {
+    width: 100%;
+    height: 500px;
+}
+#map {
+    width: 100%;
+    height: 300px;
+}
+body {
+    background-color: #edf6f9 !important;
+}
+
+.biblioteca-item {
+    display: flex;
+    flex-direction: column; /* Alinea el contenido verticalmente */
+    justify-content: center; /* Centra el contenido verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+    height: 100%; /* Asegura que todos los items tengan la misma altura */
+    width: 100%; /* Asegura que todos los items tengan el mismo ancho */
+    max-width: 500px; /* Establece un ancho máximo si lo deseas */
+    margin: auto; /* Centra el item en su contenedor */
+}
+
+.biblioteca-item .card {
+    flex: 1; /* Permite que la tarjeta ocupe el espacio disponible */
+}
+
+.biblioteca-item img {
+    width: 100%; /* La imagen ocupa todo el ancho del contenedor */
+    height: 200px; /* Establece una altura fija para todas las imágenes */
+    object-fit: cover; /* Asegura que la imagen mantenga su proporción y se recorte si es necesario */
+    display: block; /* Asegura que no haya espacios en blanco debajo de la imagen */
+}
+.bd-sidebar {
+    width: 300px; /* Ajusta según sea necesario */
+    padding: 20px;
+    background-color: #f8f9fa; /* Color de fondo para el aside */
+    border-right: 1px solid #dee2e6; /* Borde derecho */
+}
+
+.main-content {
+    margin-left: 20px; /* Espacio entre el aside y el contenido principal */
+}

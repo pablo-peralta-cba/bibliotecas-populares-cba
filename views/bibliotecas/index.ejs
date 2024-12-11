@@ -1,0 +1,159 @@
+<% layout('./layouts/boilerplate') %>
+
+<div id="cluster-map"></div>
+
+<div id="container" class="d-flex">
+    <aside class="bd-sidebar">
+        <h4>Buscar Bibliotecas</h4>
+        <form action="/bibliotecas" method="get">
+            <div class="mb-3">
+                <label for="nombre">Nombre de la Biblioteca:</label>
+                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="<%= nombre %>"  />
+            </div>
+            <div class="mb-3">
+                <label for="localidad">Ciudad:</label>
+                <input type="text" class="form-control" name="localidad" id="localidad" placeholder="Ciudad" value="<%= localidad %>"  />
+            </div>
+            <div class="mb-3">
+                <label for="codigoConabip">Código CONABIP:</label>
+                <input type="number" class="form-control" name="codigoConabip" id="codigoConabip" placeholder="Código" min="0" min="0" value="<%= codigoConabip %>"  />
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </aside>
+
+    <div class="main-content flex-grow-1">
+        <% if (error.length > 0) { %>
+            <div class="alert alert-danger">
+                <%= error %>
+            </div>
+        <% } %>
+        <h1>Bibliotecas populares en Córdoba</h1>
+        <p><a class="btn btn-info" href="./bibliotecas/nueva" role="button">Cargá tu biblioteca</a></p>
+
+        <div id="bibliotecas-list" class="row">
+            <% bibliotecas.forEach(biblioteca => { %>
+                <div class="col-md-6 col-lg-6 mb-4"> <!-- Dos columnas en md y lg -->
+                    <div class="biblioteca-item" 
+                         data-nombre="<%= biblioteca.nombre %>" 
+                         data-localidad="<%= biblioteca.localidad %>" 
+                         data-codigoConabip="<%= biblioteca.registroConabip %>">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img crossorigin="anonymous" class="img-fluid" alt=""
+                                         src="<%= biblioteca.images.length > 0 ? biblioteca.images[0].url : 'https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/seven-shooter-hPKTYwJ4FUo-unsplash_fomis1.jpg' %>">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><%= biblioteca.nombre %></h5>
+                                        <p class="card-text"><%= biblioteca.direccion %></p>
+                                        <p class="card-text">
+                                            <small class="text-muted"><%= biblioteca.localidad %></small>
+                                        </p>
+                                        <p>Código CONABIP: <%= biblioteca.registroConabip %></p>
+                                        <a class="btn btn-primary" href="/bibliotecas/<%= biblioteca._id %>">Ver <%= biblioteca.nombre %></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+
+<!-- Paginación -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <% if (currentPage > 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        <% } %>
+
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+        <% } %>
+
+        <% if (currentPage < totalPages) { %>
+            <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        <% } %>
+    </ul>
+</nav>   
+
+</main>
+<script>
+        const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>'; 
+        const bibliotecas = { features: <%- JSON.stringify(bibliotecas) %>};
+        const filteredBibliotecas = bibliotecas.features.filter(biblio => biblio.geometry && biblio.geometry.type === 'Point'
+         && Array.isArray(biblio.geometry.coordinates) && 
+         biblio.geometry.coordinates.length === 2);
+        const geoJsonBibliotecas = {
+            features: filteredBibliotecas.map(biblio => ({
+                type: "Feature",
+                geometry: {
+                    type: biblio.geometry.type,
+                    coordinates: biblio.geometry.coordinates
+                },
+                properties: {
+                    nombre: biblio.nombre,
+                    localidad: biblio.localidad,
+                    popUpMarkup: `<strong>${biblio.nombre}</strong><p>${biblio.localidad}</p>`
+                },
+               
+            })),
+            
+        };
+    </script> 
+<script>console.log(geoJsonBibliotecas)</script>
+
+<script src="/javascripts/clusterMap.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('form');
+        // Se puede añadir un evento submit para manejar la búsqueda
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevenir el envío predeterminado del formulario
+            const queryString = new URLSearchParams(new FormData(form)).toString();
+            window.location.href = `/bibliotecas?${queryString}`; // Redirigir a la URL con los parámetros de búsqueda
+        });
+    });
+</script>
+
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('form');
+        form.addEventListener('input', filterBibliotecas);
+    });
+
+    function filterBibliotecas() {
+        const nombre = document.getElementById('nombre').value.toLowerCase();
+        const localidad = document.getElementById('localidad').value.toLowerCase();
+        const codigoConabip = document.getElementById('codigoConabip').value;
+
+        const bibliotecas = document.querySelectorAll('.biblioteca-item');
+
+        bibliotecas.forEach(biblioteca => {
+            const nombreBiblio = biblioteca.dataset.nombre.toLowerCase();
+            const localidadBiblio = biblioteca.dataset.localidad.toLowerCase();
+            const codigoBiblio = biblioteca.dataset.codigoConabip;
+
+            const nombreMatch = nombreBiblio.includes(nombre);
+            const localidadMatch = localidadBiblio.includes(localidad);
+            const codigoMatch = codigoConabip ? codigoBiblio === codigoConabip : true;
+            console.log(nombreBiblio);
+            biblioteca.style.display = (nombreMatch && localidadMatch ) || codigoMatch ? 'block' : 'none';
+        });
+    }
+</script> -->

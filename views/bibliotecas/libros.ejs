@@ -1,0 +1,12 @@
+<% const title = "Todas las bibliotecas" %>
+<% layout('./layouts/boilerplate') %>
+
+<h1>Catálogo de Libros - <%= biblioteca.nombre %></h1>
+<a href="/libros" class="btn btn-primary">Ver Catálogo General</a>
+<ul>
+    <% biblioteca.catalogoLibros.forEach(libro => { %>
+        <li>
+            <a href="/libros/<%= libro._id %>"><%= libro.titulo %></a>
+        </li>
+    <% }) %>
+</ul>

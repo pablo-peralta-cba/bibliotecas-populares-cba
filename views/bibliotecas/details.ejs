@@ -1,0 +1,166 @@
+<% const title = biblioteca.nombre %>
+<% layout('layouts/boilerplate') %>
+
+    <!-- <link rel="stylesheet" href="/stylesheets/stars.css"> -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/starability-fade.min.css">
+    <div class="row">
+        <div class="col-6">
+            <div id="biblioCarousel" class="carousel slide">
+                <div class="carousel-inner">
+                    <% biblioteca.images.forEach((image, i )=> { %>
+                        <div class="carousel-item <%= i === 0 ? 'active' : '' %> ">
+                            <img crossorigin="anonymous" src="<%= image.url %>" class="d-block w-100" style="height: auto;" alt="">
+                        </div>
+                        <% }) %>
+                </div>
+                <% if (biblioteca.images.length> 1) {%>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#biblioCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#biblioCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                    <% } %>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= biblioteca.nombre %>
+                    </h5>
+                    <p class="card-text">
+                        <%= biblioteca.direccion %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted p-3">
+                        <%= biblioteca.localidad %>
+                    </li>
+                    <li class="list-group-item  p-3">
+                        <b>Teléfono:</b> <%= biblioteca.telefono %> - <%= biblioteca.opcionesTelefono %>
+                    </li>
+                    <li class="list-group-item p-3"><b>Actividades:</b> <%= biblioteca.actividades %></li>
+                    <!-- quiza deba poner un espacio mayor como parrafo para los horarios -->
+                    <li class="list-group-item p-3"><b>Horarios:</b> <%= biblioteca.horario %></li>
+                </ul>  
+                <ul class="list-group list-group-flush">
+                    <% for (const red of biblioteca.redes) { %> 
+                        <% if (red.checked && red.link) { %> 
+                           
+                                <% if (red.nombre === 'instagram') { %>
+                                   <li  class="list-group-item p-3"> <b>Instagram:</b> <a href="https://www.instagram.com/<%= red.link %>" target="_blank"><%= red.link %></a></li>
+                                <% } else if (red.nombre === 'facebook') { %>
+                                    <li  class="list-group-item p-3"> <b>Facebook:</b> <a href="https://www.facebook.com/<%= red.link %>" target="_blank"><%= red.link %></a></li>
+                                <% } else if (red.nombre === 'X') { %>
+                                    <li  class="list-group-item p-3"> <b>X (Twitter):</b> <a href="https://twitter.com/<%= red.link %>" target="_blank"><%= red.link %></a></li>
+                                <% } else if (red.nombre === 'mail') { %>
+                                    <li  class="list-group-item p-3"><b>E-mail:</b> <%= red.link %></li>
+                                <% } %>
+                           
+                        <% } %>
+                    <% } %>
+            </ul>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                       Catálogo de Libros
+                    </h5>
+                    <a class="btn btn-primary btn-sm mb-2" href="/bibliotecas/<%= biblioteca._id %>/libros" role="button">Ver Catálogo de Libros</a>
+<br>
+
+<a class="btn btn-primary btn-sm" href="/bibliotecas/<%= biblioteca._id %>/libros/nuevo">Agregar Libro</a>
+               
+                </div>
+                </div>
+                <!-- acá verificamos si el usuario logueado es el autor del biblioteca, -->
+                <!-- si no lo es, ocultamos los botones editar y borrar, para que solo el autor -->
+                <!-- acceda a esas funciones  -->
+                <% if (biblioteca && biblioteca.autor && currentUser && biblioteca.autor.equals(currentUser._id)) {%>
+                    <div class="card-body">
+                        <a class="card-link btn btn-info" href="/bibliotecas/<%= biblioteca._id %>/editar">Editar esta
+                            biblioteca</a>
+                        <form class="d-inline" action="/bibliotecas/<%= biblioteca._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Eliminar biblioteca</button>
+                        </form>
+
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+        <div class="col-6">   
+            <div id="map" style="width: 100%;  height: 400px;"></div>
+        <br>
+        <br>
+            <% if (currentUser) {%>
+                <!-- <h3>Qué te pareció esta biblioteca?</h3> -->
+                <form class="mb-3 validated-form" action="/bibliotecas/<%= biblioteca._id %>/reviews" method="post"
+                    novalidate>
+                    <div class="mb-3">
+                      
+                        <h4><label class="form-label badge text-bg-primary" for="rating">Califica esta biblioteca</label></h4>
+                      <br>
+                        <fieldset class="starability-fade">
+                            <!-- <legend>Rating:</legend> -->
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0"
+                                checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="review">Comentar</label>
+                        <textarea class="form-control" name="review[body]" id="review" cols="30" rows="4"
+                            required></textarea>
+                    </div>
+                    <div class="valid-feedback">
+                        ¡Genial!
+                    </div>
+                    <button class="btn btn-success">Enviar tu comentario</button>
+                </form>
+                <% } %>
+                    <% for (let review of biblioteca.reviews) {%>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>
+                                    <%= review.autor.username %>
+                                </h5>
+                                <p class="card-text">
+                                    <%= review.body %>
+                                </p>
+                                <% if (currentUser && review.autor.equals(currentUser._id)) {%>
+                                    <form action="/bibliotecas/<%= biblioteca._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                        method="POST">
+                                        <button class="btn btn-sm btn-danger">Borrar comentario</button>
+                                    </form>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% } %>
+        </div>
+    </div>
+
+    </div>
+    </div>
+    <script>
+        const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
+        const bibliotecaData = {
+        nombre: '<%= biblioteca.nombre %>',
+        coords: {
+            lat: '<%= biblioteca.geometry.coordinates[1] %>',
+            lon: '<%= biblioteca.geometry.coordinates[0] %>'
+        }
+    };
+    </script>
+    <script src="/javascripts/showPageMap.js"></script>
