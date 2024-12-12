@@ -45,21 +45,21 @@ const biblioSchema = new Schema({
         type: [String],
         required: true
       },
-      cuota: {
+    cuota: {
         type: {
             existe: {
                 type: Boolean,
-               // required: true
+                default: false,
             },
             valor: {
                 type: Number,
+                min: 0, // Asegura que el valor no sea negativo
                 required: function() {
-                    return this.cuota.existe; // Solo es requerido si existe la cuota
+                    return this.cuota && this.cuota.existe; // Solo es requerido si existe la cuota
                 },
-                min: 0 // Asegura que el valor no sea negativo
+                
             }
         },
-       // required: true
     },
       telefono: {
         type: String, // Cambiado a String para permitir códigos de área
@@ -122,17 +122,6 @@ biblioSchema.post('findOneAndDelete', async function (doc) {
         })
     }
 })
-
-
-
-
-biblioSchema.post('findOneAndDelete', async function (doc) {
-    if (doc) {
-        await Review.deleteMany({
-            _id: { $in: doc.reviews }
-        });
-    }
-});
 
 
 

@@ -51,16 +51,21 @@
                         ¡Genial!
                     </div>
             </div>
-            <div class="mb-3">
-                          <label class="form-label" for="cuota">¿Hay cuota?</label>
-                <input type="checkbox" id="cuota" name="cuota.existe">
+      <!-- Campo para cuota -->
+      <div class="mb-3">
+        <label class="form-label" for="cuota">¿Hay cuota?</label>
+        <!-- Campo oculto para enviar 'false' cuando no está marcado -->
+        <input type="hidden" name="biblioteca[cuota][existe]" value="false">
+        <!-- Checkbox para enviar 'true' cuando está marcado -->
+        <input type="checkbox" id="cuota" name="biblioteca[cuota][existe]" value="true">
+    </div>
 
+    <!-- Valor de la cuota -->
+    <div class="mb-3">
         <label class="form-label" for="valorCuota">Valor de la cuota:</label>
-        <input class="form-control" type="number" id="valorCuota" name="cuota.valor" min="0" placeholder="0" disabled>
-                        <div class="valid-feedback">
-                            ¡Genial!
-                        </div>
-                    </div>
+        <input class="form-control" type="number" id="valorCuota" name="biblioteca[cuota][valor]" min="0" placeholder="0" disabled>
+        <div class="valid-feedback">¡Genial!</div>
+    </div>
     
 
                 <div class="mb-3">

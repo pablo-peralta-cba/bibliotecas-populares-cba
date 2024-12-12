@@ -53,12 +53,19 @@ module.exports.biblioSchema = baseJoi.object({
         ).optional(),
         // image: joi.string().optional()
         geometry: Joi.object({
-            type: Joi.string().valid('Point').optional(), // Puede ser 'Point', opcional
+            existe: Joi.string().valid('Point').optional(), // Puede ser 'Point', opcional
             coordinates: Joi.array().items(Joi.number()).length(2).optional() // Dos números para longitud y latitud
         }).optional(),
-    }).required(),
+        cuota: Joi.object({
+            existe: Joi.boolean().required(),  // Se asegura de que sea booleano
+            valor: Joi.number().min(0).when('existe', {
+                is: true,
+                then: Joi.required()
+            }).optional(),
+        }).optional(),
     deleteImages: Joi.array(),
     deleteLibros: Joi.array(),
+})
 });
 
 

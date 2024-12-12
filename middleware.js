@@ -54,7 +54,26 @@ module.exports.esReviewAutor = async (req, res, next) => {
         return res.redirect(`/bibliotecas/${id}`)
     }
     next();
-}
+};
+
+
+module.exports.cuotaMiddleware = (req, res, next) => {
+    // Verifica que el campo cuota.existe sea convertido a booleano
+    if (req.body.biblioteca && req.body.biblioteca.cuota) {
+        console.log('Antes de modificar cuota:', req.body.biblioteca.cuota);
+        
+        // Asegúrate de que cuota.existe sea un booleano
+        req.body.biblioteca.cuota.existe = req.body.biblioteca.cuota.existe === 'true';  // Convertir a booleano
+        
+        console.log('Después de modificar cuota:', req.body.biblioteca.cuota);
+
+        // Si cuota.existe es true, asegurarse de que cuota.valor sea un número
+        if (req.body.biblioteca.cuota.existe && typeof req.body.biblioteca.cuota.valor !== 'number') {
+            req.body.biblioteca.cuota.valor = 0; // O el valor predeterminado que prefieras
+        }
+    }
+    next();
+};
 
 // Joi middleware function
 // we have to add this middleware func as an argument on our routing functions 
@@ -67,14 +86,7 @@ module.exports.validateBiblio = (req, res, next) => {
             req.body.biblioteca.redes = []; // Si no hay redes, inicializa como array vacío
         }
     }
-    // if (!Array.isArray(req.body.biblioteca.catalogoLibros)) {
-    //     if (req.body.biblioteca.catalogoLibros) {
-    //         req.body.biblioteca.catalogoLibros = [req.body.biblioteca.catalogoLibros]; // Convierte a array si es un objeto
-    //     } else {
-    //         req.body.biblioteca.catalogoLibros = []; // Si no hay redes, inicializa como array vacío
-    //     }
-    // }
-    // joi verification (server side)
+
     const { error } = biblioSchema.validate(req.body);
     if (error) {
         const msj = error.details.map(elem => elem.message).join(',');

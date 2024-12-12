@@ -242,10 +242,13 @@ module.exports.librosPorBiblio = async (req, res) => {
        if (titulo) query.titulo = { $regex: titulo, $options: 'i' };   // Filtro por título
        if (autor) query.autor = { $regex: autor, $options: 'i' };       // Filtro por autor
        if (genero) query.genero = { $regex: genero, $options: 'i' };    // Filtro por género
-   
+        
+       // Definir la variable isBusqueda para saber si se ha hecho una búsqueda
+        const isBusqueda = titulo || autor || genero;
+
        // Realizar la búsqueda de los libros si hay filtros, si no, pasar el catálogo completo de la biblioteca
        let libros = [];
-       if (titulo || autor || genero) {
+       if (isBusqueda) {
            libros = await Libro.find(query);  // Obtener libros filtrados
        } else {
            libros = biblioteca.catalogoLibros;  // Mostrar todos los libros si no hay filtros
@@ -257,6 +260,6 @@ module.exports.librosPorBiblio = async (req, res) => {
            libros,
            title: `Libros de ${biblioteca.nombre}`,
            isGeneral: false,
+           isBusqueda, // Pasamos isBusqueda a la vista
        });
-   // res.render('libros/index', { biblioteca, libros: biblioteca.catalogoLibros, title: `Libros de ${biblioteca.nombre}`, isGeneral: false });
 };
