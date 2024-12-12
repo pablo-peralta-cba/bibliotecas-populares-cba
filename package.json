@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "20.15.1"
+  },
   "name": "proyecto-bibliotecas-populares",
   "version": "1.0.0",
   "main": "index.js",
