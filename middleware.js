@@ -44,7 +44,16 @@ module.exports.isVerified = async (req, res, next) => {
         return res.redirect(`/`)
     }
     next();
-}
+};
+
+module.exports.verificarEmail = async (req, res, next) => {
+    // Verificar si el usuario está autenticado y si su email está verificado
+    if (!req.user || !req.user.isVerified) {
+        req.flash('error', 'Por favor, verifica tu correo electrónico antes de continuar.');
+        return  res.render('usuarios/esperaVerificacion', {title: 'Verificación Pendiente'});  // Redirige a una página de verificación o login
+    }
+    next();
+};
 
 module.exports.esReviewAutor = async (req, res, next) => {
     const { id, reviewId } = req.params;

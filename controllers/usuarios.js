@@ -31,9 +31,9 @@ module.exports.verifyEmail = async (req, res) => {
         usuario.verificationToken = undefined;  // Borra el token
         await usuario.save();
 
-            // Redirigir a la página de inicio después de verificar
-            res.redirect('/');
-        // res.send('Tu cuenta ha sido verificada exitosamente. ¡Ya puedes iniciar sesión!');
+     // Redirigir al usuario a la página de login con un mensaje de éxito
+     req.flash('success', 'Tu cuenta ha sido verificada exitosamente. ¡Ya puedes iniciar sesión!');
+     res.redirect('/login');  // O redirige a otra página que desees, como la página de inicio
     } catch (err) {
         console.log(err);
         res.status(500).send('Error en el proceso de verificación');
@@ -47,7 +47,7 @@ module.exports.registerForm = (req, res) => {
 module.exports.registro = async (req, res, next) => {
     try {
         const { email, username, password } = req.body;
-        const usuario = new Usuario({ email, username });
+        const usuario = new Usuario({ email, username, isVerified: false });
         const registroUsuario = await Usuario.register(usuario, password);
         console.log(registroUsuario);
 
@@ -57,10 +57,9 @@ module.exports.registro = async (req, res, next) => {
         // Guarda el token en el usuario (puedes agregar una propiedad en el modelo)
         usuario.verificationToken = token;
         await usuario.save();
-
-        // Crear el enlace de verificación
-        const verificationUrl = `http://localhost:3000/verify/${token}`;
-
+        // Crear el enlace de verificación, usa una variable de entorno para el dominio
+        const verificationUrl = `${process.env.SITE_URL}/verify/${token}`;
+  
         // Configurar el correo
         const mailOptions = {
             from: process.env.EMAIL_USER,  // Usar el correo de la variable de entorno
@@ -81,12 +80,6 @@ module.exports.registro = async (req, res, next) => {
             // Redirigir al usuario a la página de "Revisa tu correo"
             res.render('usuarios/esperaVerificacion', {title: 'Verificación Pendiente'});
            
-            // Iniciar sesión después de enviar el correo
-            // req.login(registroUsuario, err => {
-            //     if (err) return next(err);
-            //     req.flash('success', 'Bienvenidos a Bibliotecas Populares Córdoba');
-            //     res.redirect('/bibliotecas');
-            // });
         });
 
     } catch (err) {
