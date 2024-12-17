@@ -60,7 +60,7 @@ module.exports.registro = async (req, res, next) => {
         usuario.verificationToken = token;
         await usuario.save();
         // Crear el enlace de verificación, usa una variable de entorno para el dominio
-        const verificationUrl = `${process.env.SITE_URL}/verify/${token}`;
+    const verificationUrl = `${process.env.SITE_URL.replace(/\/$/, '')}/verify/${token}`;;
   
         // Configurar el correo
         const mailOptions = {
