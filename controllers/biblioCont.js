@@ -132,7 +132,7 @@ module.exports.biblioDetails = async (req, res) => {
         link: red.link || ''
     }));
     
-    res.render('bibliotecas/details', { biblioteca, redes, title: biblioteca.nombre });
+    res.render('bibliotecas/details', { biblioteca,  currentUser: req.user, redes, title: biblioteca.nombre });
 };
 
 

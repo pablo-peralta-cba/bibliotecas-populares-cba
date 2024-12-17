@@ -17,26 +17,28 @@ function generarTokenVerificacion() {
 
 // Función para manejar la verificación del correo
 module.exports.verifyEmail = async (req, res) => {
-    const { token } = req.params;
-
     try {
+        const { token } = req.params; // Obtenemos el token de la URL
+
+          // Buscar al usuario usando el token de verificación
         const usuario = await Usuario.findOne({ verificationToken: token });
 
         if (!usuario) {
-            return res.status(400).send('Token de verificación inválido o expirado.');
+            req.flash('error', 'Token de verificación inválido o expirado.');
+            return res.redirect('/login');  // Redirigir al login si el token es inválido
         }
 
         // Verificación exitosa: activar la cuenta
         usuario.isVerified = true;
-        usuario.verificationToken = undefined;  // Borra el token
+        usuario.verificationToken = null;  // Borra el token
         await usuario.save();
 
      // Redirigir al usuario a la página de login con un mensaje de éxito
      req.flash('success', 'Tu cuenta ha sido verificada exitosamente. ¡Ya puedes iniciar sesión!');
      res.redirect('/login');  // O redirige a otra página que desees, como la página de inicio
     } catch (err) {
-        console.log(err);
-        res.status(500).send('Error en el proceso de verificación');
+        req.flash('error', 'Hubo un problema al verificar tu cuenta. Intenta nuevamente.');
+        res.redirect('/login');
     }
 };
 
@@ -87,7 +89,6 @@ module.exports.registro = async (req, res, next) => {
         res.redirect('/registro');
     }
 };
-
 
 
 module.exports.renderLoginForm = (req, res) => {

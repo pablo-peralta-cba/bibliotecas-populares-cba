@@ -14,7 +14,7 @@
     <p><strong>Código de Catálogo:</strong> <%= libro.codigoCat %></p>
     <p><strong>Género:</strong> <%= libro.genero || 'No especificado' %></p>
     <p><strong>Año de Publicación:</strong> <%= libro.publishYear || 'No especificado' %></p>
-    <p><strong>Biblioteca:</strong> <%= libro.biblioteca.nombre || 'No especificado' %></p>
+    <p><strong>Biblioteca:</strong> <%= libro.biblioteca ? libro.biblioteca.nombre : 'No especificado' %></p>
 
     <!-- acá verificamos si el usuario logueado es el autor del biblioteca, -->
                 <!-- si no lo es, ocultamos los botones editar y borrar, para que solo el autor -->

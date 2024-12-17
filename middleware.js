@@ -38,13 +38,6 @@ module.exports.esAutor = async (req, res, next) => {
     next();
 };
 
-module.exports.isVerified = async (req, res, next) => {
-    if (!req.user || !req.user.isVerified) {
-        req.flash('error', 'No tienes autorización para realizar esa acción!!!');
-        return res.redirect(`/`)
-    }
-    next();
-};
 
 module.exports.verificarEmail = async (req, res, next) => {
     // Verificar si el usuario está autenticado y si su email está verificado
