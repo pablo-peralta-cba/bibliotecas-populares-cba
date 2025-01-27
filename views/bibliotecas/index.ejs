@@ -131,29 +131,3 @@
     });
 </script>
 
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.querySelector('form');
-        form.addEventListener('input', filterBibliotecas);
-    });
-
-    function filterBibliotecas() {
-        const nombre = document.getElementById('nombre').value.toLowerCase();
-        const localidad = document.getElementById('localidad').value.toLowerCase();
-        const codigoConabip = document.getElementById('codigoConabip').value;
-
-        const bibliotecas = document.querySelectorAll('.biblioteca-item');
-
-        bibliotecas.forEach(biblioteca => {
-            const nombreBiblio = biblioteca.dataset.nombre.toLowerCase();
-            const localidadBiblio = biblioteca.dataset.localidad.toLowerCase();
-            const codigoBiblio = biblioteca.dataset.codigoConabip;
-
-            const nombreMatch = nombreBiblio.includes(nombre);
-            const localidadMatch = localidadBiblio.includes(localidad);
-            const codigoMatch = codigoConabip ? codigoBiblio === codigoConabip : true;
-            console.log(nombreBiblio);
-            biblioteca.style.display = (nombreMatch && localidadMatch ) || codigoMatch ? 'block' : 'none';
-        });
-    }
-</script> -->

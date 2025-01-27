@@ -43,9 +43,13 @@ module.exports.biblioSchema = baseJoi.object({
         horario: Joi.string().required().escapeHTML(),
         redes: baseJoi.array().items(
             baseJoi.object({
-                nombre: baseJoi.string().required(),
-                checked: baseJoi.boolean().optional(),
-                link: baseJoi.string().allow('').optional() // Permite un string vacío para el link
+                nombre: baseJoi.string().valid('instagram', 'facebook', 'X', 'mail').required(),
+                checked: baseJoi.boolean().required(),
+                link: baseJoi.string().when('checked', {
+                    is: true,
+                    then: Joi.required(),
+                    otherwise: Joi.optional(),
+                }).allow('', null).optional() // Permite un string vacío para el link
             }).optional()
         ).optional(),
         catalogoLibros: baseJoi.array().items(
@@ -63,9 +67,10 @@ module.exports.biblioSchema = baseJoi.object({
                 then: Joi.required()
             }).optional(),
         }).optional(),
-    deleteImages: Joi.array(),
-    deleteLibros: Joi.array(),
-})
+             // Validar que `deleteImages` sea un array de cadenas (public_ids)
+        deleteImages: Joi.array().items(Joi.string().required()).optional(), // Permite arrays vacíos también,
+        deleteLibros: Joi.array().optional(),
+}).unknown(true) // Permite campos no definidos
 });
 
 

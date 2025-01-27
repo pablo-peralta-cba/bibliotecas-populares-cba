@@ -6,10 +6,18 @@ const Libro = require('./libro');
 
 const imageSchema = new Schema({
     url: {
-        type: String
+        type: String, // Aquí almacenas la URL directa (si la necesitas)
     },
-    filename: String,
-})
+    filename: {
+        type: String, // Esto debería ser el nombre del archivo (o el public_id que uses)
+    },
+    secure_url: {
+        type: String, // Cloudinary te da este campo para una URL segura (HTTPS)
+    },
+    public_id: {
+        type: String, // El ID público de Cloudinary, necesario para realizar eliminaciones
+    }
+});
 
 // usamos esta funcion para mostrar imagenes chicas en la pagina editar 
 imageSchema.virtual('thumbnail').get(function () {
@@ -108,7 +116,8 @@ const biblioSchema = new Schema({
         type: Number,
         required: true
     },
-    catalogoLibros: [{ type: Schema.Types.ObjectId, ref: 'Libro' }] // Catálogo de libros
+    catalogoLibros: [{ type: Schema.Types.ObjectId, ref: 'Libro' }], // Catálogo de libros
+    deleteImages: [String] // Nuevo campo para las imágenes a eliminar
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } }); //acá agregamos la variable opts que nos deja agregar virtuals al JSON
 
 // Esta middleware function sirve para borrar los comentarios

@@ -51,12 +51,28 @@
                         <option value="Llamadas y WhatsApp">Llamadas y WhatsApp</option>
                         <option value="Solo WhatsApp">Solo WhatsApp</option>
                     </select>
+                         <!-- Campo para cuota -->
+      <div class="mb-3">
+        <label class="form-label" for="cuota">¿Hay cuota?</label>
+        <!-- Campo oculto para enviar 'false' cuando no está marcado -->
+            <!-- <input type="hidden" name="biblioteca[cuota][existe]" value="false"> -->
+        <!-- Checkbox para enviar 'true' cuando está marcado -->
+        <input type="checkbox" id="cuota" name="biblioteca[cuota][existe]" value="<%= biblioteca.cuota.existe %>">
+    
+    </div>
+
+    <!-- Valor de la cuota -->
+    <div class="mb-3">
+        <label class="form-label" for="valorCuota">Valor de la cuota:</label>
+        <input class="form-control" type="number" id="valorCuota" name="biblioteca[cuota][valor]" min="0" value="<%= biblioteca.cuota.valor %>">
+        <div class="valid-feedback">¡Genial!</div>
+    </div>
                     <div class="mb-3">
                         <label class="form-label">Redes Sociales:</label>
                         <div>
                             <div class="input-group mb-3">
                                 <div class="input-group-text">
-                                    <input class="form-check-input mt-0" id="IG" type="checkbox" name="biblioteca[redes][0][checked]" value="true">
+                                    <input class="form-check-input mt-0" id="IG" type="checkbox" name="biblioteca[redes][0][checked]" value="<%= biblioteca.redes[0].checked %>">
                                     <label class="form-check-label" for="IG"> Instagram</label>
                                 </div>
                                 <input type="text" class="form-control" name="biblioteca[redes][0][link]" placeholder="Usuario de Instagram" value="<%= (biblioteca.redes && biblioteca.redes[0] && biblioteca.redes[0].link) ? biblioteca.redes[0].link : '' %>">
@@ -136,11 +152,6 @@
 
                         <% }) %>
                     </div>
-                </div>
-           
-                <button type="button" id="add-libro">Agregar Otro Libro</button>
-                <button class="remove-book-btn">Eliminar</button> 
-             </div>
                 <div class="mb-3">
                     <button class="btn btn-info btn-block">Editar biblioteca</button>
                 </div>

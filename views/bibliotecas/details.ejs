@@ -45,11 +45,14 @@
                     <li class="list-group-item p-3"><b>Actividades:</b> <%= biblioteca.actividades %></li>
                     <!-- quiza deba poner un espacio mayor como parrafo para los horarios -->
                     <li class="list-group-item p-3"><b>Horarios:</b> <%= biblioteca.horario %></li>
+                    <% if (biblioteca.cuota.existe) {%>
+                    <li class="list-group-item p-3"><b>Cuota:</b> $<%= biblioteca.cuota.valor %></li>
+                    <% } %>
                 </ul>  
                 <ul class="list-group list-group-flush">
-                    <% for (const red of biblioteca.redes) { %> 
-                        <% if (red.checked && red.link) { %> 
-                           
+                    <% for (const red of biblioteca.redes) { %>
+                        <% if (red.checked && red.link) { %>
+                          
                                 <% if (red.nombre === 'instagram') { %>
                                    <li  class="list-group-item p-3"> <b>Instagram:</b> <a href="https://www.instagram.com/<%= red.link %>" target="_blank"><%= red.link %></a></li>
                                 <% } else if (red.nombre === 'facebook') { %>
@@ -59,7 +62,7 @@
                                 <% } else if (red.nombre === 'mail') { %>
                                     <li  class="list-group-item p-3"><b>E-mail:</b> <%= red.link %></li>
                                 <% } %>
-                           
+                          
                         <% } %>
                     <% } %>
             </ul>

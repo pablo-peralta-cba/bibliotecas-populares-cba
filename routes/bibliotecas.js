@@ -24,7 +24,7 @@ router.get('/requisitos', bibliotecas.requisitos);
 
 router.route('/:id')
     .get(catchAsync(bibliotecas.biblioDetails))
-    .put(estaLogueado, verificarEmail, esAutor, upload.array('image', 10), cuotaMiddleware, validateBiblio, catchAsync(bibliotecas.editarBiblio)) 
+    .put(estaLogueado, verificarEmail, esAutor, upload.array('image', 10), validateBiblio, cuotaMiddleware, catchAsync(bibliotecas.editarBiblio)) 
     .delete(estaLogueado, esAutor, catchAsync(bibliotecas.borrarBiblio));
 
 router.get('/:id/editar', estaLogueado, esAutor, verificarEmail, catchAsync(bibliotecas.editForm));

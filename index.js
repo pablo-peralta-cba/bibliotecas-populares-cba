@@ -93,7 +93,9 @@ const styleSrcUrls = [
 const connectSrcUrls = [
     "https://api.maptiler.com/", // add this
 ];
-const fontSrcUrls = [];
+const fontSrcUrls = [
+    'https://cdn.jsdelivr.net/npm/bootstrap-icons/'
+];
 
 
 // aca configuramos Helmet con las URL que definimos anteriormente
@@ -163,7 +165,7 @@ app.all('*', (req, res, next) => {
 // Manejo de errores
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
-    res.status(statusCode).render('error', { err });
+    res.status(statusCode).render('error', { err } );
 });
 
 // Iniciar servidor
