@@ -1,17 +1,19 @@
 <% layout('layouts/boilerplate') %>
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-6 offset-3 text-center">
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading">
-                    <%= err.message %>
+              <%= err.status %>
+              No se pudo encontrar la página o hay datos faltantes
                 </h4>
-<!-- we dont want to show our error stack to users (outside development)  -->
-              <% if (process.env.NODE_ENV !== 'production') { %>  
+ <!-- we dont want to show our error stack to users (outside development)  -->
+              <% if (process.env.NODE_ENV !== 'production') { %> 
                    <p>
+                    <%= err.message %>
                     <%= err.stack %>
                 </p>
                 <% }; %>
-             
+ 
             </div>
         </div>
     </div>

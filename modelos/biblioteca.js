@@ -55,16 +55,17 @@ const biblioSchema = new Schema({
       },
     cuota: {
         type: {
-            existe: {
-                type: Boolean,
-                default: false,
-            },
+            // existe: {
+            //     type: Boolean,
+            //     default: false,
+            // },
             valor: {
                 type: Number,
-                min: 0, // Asegura que el valor no sea negativo
-                required: function() {
-                    return this.cuota && this.cuota.existe; // Solo es requerido si existe la cuota
-                },
+                min: 0, 
+                required: true// Asegura que el valor no sea negativo
+                // required: function() {
+                //     return this.cuota && this.cuota.existe === 'true'; // Solo es requerido si existe la cuota
+                // },
                 
             }
         },

@@ -164,8 +164,10 @@ app.all('*', (req, res, next) => {
 
 // Manejo de errores
 app.use((err, req, res, next) => {
+    // req.flash('error', 'Se encontraron datos erróneos en la búsqueda');
+    // return res.redirect('/bibliotecas');
     const { statusCode = 500 } = err;
-    res.status(statusCode).render('error', { err } );
+    res.status(statusCode).render('error',{ err });
 });
 
 // Iniciar servidor

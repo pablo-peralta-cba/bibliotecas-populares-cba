@@ -45,9 +45,7 @@
                     <li class="list-group-item p-3"><b>Actividades:</b> <%= biblioteca.actividades %></li>
                     <!-- quiza deba poner un espacio mayor como parrafo para los horarios -->
                     <li class="list-group-item p-3"><b>Horarios:</b> <%= biblioteca.horario %></li>
-                    <% if (biblioteca.cuota.existe) {%>
                     <li class="list-group-item p-3"><b>Cuota:</b> $<%= biblioteca.cuota.valor %></li>
-                    <% } %>
                 </ul>  
                 <ul class="list-group list-group-flush">
                     <% for (const red of biblioteca.redes) { %>

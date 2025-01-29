@@ -52,14 +52,7 @@
                         <option value="Solo WhatsApp">Solo WhatsApp</option>
                     </select>
                          <!-- Campo para cuota -->
-      <div class="mb-3">
-        <label class="form-label" for="cuota">¿Hay cuota?</label>
-        <!-- Campo oculto para enviar 'false' cuando no está marcado -->
-            <!-- <input type="hidden" name="biblioteca[cuota][existe]" value="false"> -->
-        <!-- Checkbox para enviar 'true' cuando está marcado -->
-        <input type="checkbox" id="cuota" name="biblioteca[cuota][existe]" value="<%= biblioteca.cuota.existe %>">
-    
-    </div>
+
 
     <!-- Valor de la cuota -->
     <div class="mb-3">
@@ -72,7 +65,7 @@
                         <div>
                             <div class="input-group mb-3">
                                 <div class="input-group-text">
-                                    <input class="form-check-input mt-0" id="IG" type="checkbox" name="biblioteca[redes][0][checked]" value="<%= biblioteca.redes[0].checked %>">
+                                    <input class="form-check-input mt-0" id="IG" type="checkbox" name="biblioteca[redes][0][checked]" value="true">
                                     <label class="form-check-label" for="IG"> Instagram</label>
                                 </div>
                                 <input type="text" class="form-control" name="biblioteca[redes][0][link]" placeholder="Usuario de Instagram" value="<%= (biblioteca.redes && biblioteca.redes[0] && biblioteca.redes[0].link) ? biblioteca.redes[0].link : '' %>">
@@ -160,7 +153,7 @@
             <a href="/bibliotecas/<%= biblioteca._id %>/libros/nuevo">Agregar Libro</a>
             </div>
             <div>
-                <a href="/bibliotecas/<%= biblioteca._id %>">Volver al biblioteca</a>
+                <a href="/bibliotecas/<%= biblioteca._id %>">Volver a la biblioteca</a>
             </div>
         </div>
     </div>

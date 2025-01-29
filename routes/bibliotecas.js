@@ -6,7 +6,7 @@ const Review = require('../modelos/reviews');
 const Biblioteca = require('../modelos/biblioteca');
 const bibliotecas = require('../controllers/biblioCont');
 const libros = require('../controllers/libroCont');
-const { verificarEmail, cuotaMiddleware, estaLogueado, validateBiblio, validateLibro, esAutor} = require('../middleware');
+const { verificarEmail, estaLogueado,cuotaMiddleware,  validateBiblio, validateLibro, esAutor} = require('../middleware'); 
 const multer = require('multer');
 const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
@@ -24,7 +24,7 @@ router.get('/requisitos', bibliotecas.requisitos);
 
 router.route('/:id')
     .get(catchAsync(bibliotecas.biblioDetails))
-    .put(estaLogueado, verificarEmail, esAutor, upload.array('image', 10), validateBiblio, cuotaMiddleware, catchAsync(bibliotecas.editarBiblio)) 
+    .put(estaLogueado, verificarEmail, esAutor, upload.array('image', 10),cuotaMiddleware, validateBiblio, catchAsync(bibliotecas.editarBiblio))  
     .delete(estaLogueado, esAutor, catchAsync(bibliotecas.borrarBiblio));
 
 router.get('/:id/editar', estaLogueado, esAutor, verificarEmail, catchAsync(bibliotecas.editForm));

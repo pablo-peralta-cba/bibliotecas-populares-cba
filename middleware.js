@@ -4,6 +4,7 @@ const Biblioteca = require('./modelos/biblioteca');
 const Review = require('./modelos/reviews');
 const Usuario = require('./modelos/usuario.js');
 const biblioteca = require('./modelos/biblioteca');
+const { Joi} = require('joi');
 
 module.exports.estaLogueado = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -54,13 +55,12 @@ module.exports.esReviewAutor = async (req, res, next) => {
 };
 
 module.exports.cuotaMiddleware = (req, res, next) => {
-    if (req.body.biblioteca && req.body.biblioteca.cuota) {
-        req.body.biblioteca.cuota.existe = 'true'; //req.body.biblioteca.cuota.existe === 
-        // if (req.body.biblioteca.cuota.existe && typeof req.body.biblioteca.cuota.valor !== 'number') {
-        //     req.body.biblioteca.cuota.valor = 0;
-        // }
-    }
-    next();
+    
+  if (typeof req.body.biblioteca.cuota.valor !== 'number') { 
+        req.body.biblioteca.cuota.valor = 0;
+    };
+    
+    next()
 };
 
 module.exports.validateBiblio = (req, res, next) => {
