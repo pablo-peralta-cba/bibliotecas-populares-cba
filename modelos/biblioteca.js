@@ -54,21 +54,9 @@ const biblioSchema = new Schema({
         required: true
       },
     cuota: {
-        type: {
-            // existe: {
-            //     type: Boolean,
-            //     default: false,
-            // },
-            valor: {
-                type: Number,
-                min: 0, 
-                required: true// Asegura que el valor no sea negativo
-                // required: function() {
-                //     return this.cuota && this.cuota.existe === 'true'; // Solo es requerido si existe la cuota
-                // },
-                
-            }
-        },
+        type: Number,
+        min: 0, 
+        required: true
     },
       telefono: {
         type: String, // Cambiado a String para permitir códigos de área

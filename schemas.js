@@ -60,20 +60,12 @@ module.exports.biblioSchema = baseJoi.object({
             existe: Joi.string().valid('Point').optional(), // Puede ser 'Point', opcional
             coordinates: Joi.array().items(Joi.number()).length(2).optional() // Dos números para longitud y latitud
         }).optional(),
-        cuota: Joi.object({
-            // existe: Joi.boolean().optional(),  //.required() Se asegura de que sea booleano
-            valor: Joi.number().min(0)
-            // .when('existe', {
-            //     is: true,
-            //     then: Joi.required(),
-            //     otherwise: Joi.optional()
-            }),
-        }).optional(),
+        cuota: Joi.number().required().min(0),
              // Validar que `deleteImages` sea un array de cadenas (public_ids)
         deleteImages: Joi.array().items(Joi.string().required()).optional(), // Permite arrays vacíos también,
         deleteLibros: Joi.array().optional(),
 }).unknown(true) // Permite campos no definidos
-;
+});
 
 
 module.exports.reviewSchema = Joi.object({

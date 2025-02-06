@@ -79,7 +79,7 @@ module.exports.crearBiblio = async (req, res, next) => {
         }
         biblioteca.geometry = geoData.features[0].geometry;
     }
-
+    const cuota = req.body.biblioteca.cuota;
     // Manejo del catálogo de libros
     if (req.body.catalogoLibros && Array.isArray(req.body.catalogoLibros)) {
         const librosIds = [];
@@ -206,7 +206,7 @@ module.exports.editarBiblio = async (req, res) => {
             console.error('Falta nombre en redes sociales');
             return res.status(400).send('Todos los campos de nombre son requeridos en las redes sociales');
         }
-
+        const cuota = req.body.biblioteca.cuota;
         // Procesar catálogo de libros
         const catalogoLibros = req.body.biblioteca.catalogoLibros || [];
         biblioteca.catalogoLibros = catalogoLibros

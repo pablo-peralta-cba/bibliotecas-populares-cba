@@ -56,9 +56,7 @@ module.exports.esReviewAutor = async (req, res, next) => {
 
 module.exports.cuotaMiddleware = (req, res, next) => {
     
-  if (typeof req.body.biblioteca.cuota.valor !== 'number') { 
-        req.body.biblioteca.cuota.valor = 0;
-    };
+
     
     next()
 };
