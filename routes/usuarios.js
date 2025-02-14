@@ -24,4 +24,8 @@ router.get('/logout', usuarios.logout);
 // Ruta de verificación de correo
 router.get('/verify/:token', catchAsync(usuarios.verifyEmail));
 
+router.route('/contacto')
+    .get(usuarios.contactoForm)
+    .post(usuarios.contacto);
+
 module.exports = router;

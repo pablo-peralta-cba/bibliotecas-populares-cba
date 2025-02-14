@@ -90,6 +90,34 @@ module.exports.registro = async (req, res, next) => {
     }
 };
 
+module.exports.contactoForm = (req, res) => {
+    res.render('usuarios/contacto', {title: 'Contacto'});
+};
+
+module.exports.contacto = async (req, res, next) => {
+    const { nombre, email, mensaje } = req.body;
+  
+    // Opciones del correo
+    const mailOptions = {
+      from: email, // El email del usuario
+      to: process.env.EMAIL_USER, // El tuyo
+      subject: `Nuevo mensaje de ${nombre}`,
+      text: `Has recibido un nuevo mensaje de ${nombre} (${email}):\n\n${mensaje}`
+    };
+  
+    // Enviar el correo
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error.stack);
+        console.log(error.message);
+        return res.status(500).send('Error al enviar el correo.');
+      }
+        req.flash('success', '¡Correo enviado con éxito!');
+        console.log(info.response);
+        // res.send('¡Correo enviado con éxito!'),
+       res.redirect('/bibliotecas')
+    });
+  };
 
 module.exports.renderLoginForm = (req, res) => {
     res.render('usuarios/login', {title: 'Login Usuario'});
