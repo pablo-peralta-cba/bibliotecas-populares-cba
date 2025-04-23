@@ -33,7 +33,7 @@
 
         <div id="bibliotecas-list" class="row">
             <% bibliotecas.forEach(biblioteca => { %>
-                <div class="col-md-6 col-lg-6 mb-4"> <!-- Dos columnas en md y lg -->
+                <div class="col-md-6 col-lg-6 mb-4">
                     <div class="biblioteca-item" 
                          data-nombre="<%= biblioteca.nombre %>" 
                          data-localidad="<%= biblioteca.localidad %>" 
@@ -47,12 +47,12 @@
                                 <div class="col-md-8">
                                     <div class="card-body">
                                         <h5 class="card-title"><%= biblioteca.nombre %></h5>
-                                        <p class="card-text"><%= biblioteca.direccion %></p>
+                                        <p id="address" class="card-text"><%= biblioteca.direccion %></p>
                                         <p class="card-text">
                                             <small class="text-muted"><%= biblioteca.localidad %></small>
                                         </p>
-                                        <p>Código CONABIP: <%= biblioteca.registroConabip %></p>
-                                        <a class="btn btn-primary" href="/bibliotecas/<%= biblioteca._id %>">Ver <%= biblioteca.nombre %></a>
+                                        <p id="conabip">Código CONABIP: <%= biblioteca.registroConabip %></p>
+                                        <a class="btn btn-primary" href="/bibliotecas/<%= biblioteca._id %>">Ver biblioteca</a>
                                     </div>
                                 </div>
                             </div>
@@ -92,8 +92,9 @@
 </nav>   
 
 </main>
+
 <script>
-        const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>'; 
+const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>'; 
         const bibliotecas = { features: <%- JSON.stringify(bibliotecas) %>};
         const filteredBibliotecas = bibliotecas.features.filter(biblio => biblio.geometry && biblio.geometry.type === 'Point'
          && Array.isArray(biblio.geometry.coordinates) && 
@@ -114,20 +115,14 @@
             })),
             
         };
-    </script> 
+
+</script>
+
+<script src="/javascripts/biblioIndex.js"></script>
+
 <script>console.log(geoJsonBibliotecas)</script>
 
 <script src="/javascripts/clusterMap.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.querySelector('form');
-        // Se puede añadir un evento submit para manejar la búsqueda
-        form.addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevenir el envío predeterminado del formulario
-            const queryString = new URLSearchParams(new FormData(form)).toString();
-            window.location.href = `/bibliotecas?${queryString}`; // Redirigir a la URL con los parámetros de búsqueda
-        });
-    });
-</script>
+
 
