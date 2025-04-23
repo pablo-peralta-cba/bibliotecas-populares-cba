@@ -2,216 +2,206 @@
     width: 100%;
     height: 500px;
 }
+
 #map {
     width: 100%;
     height: 300px;
 }
+
 body {
     background-color: #edf6f9 !important;
 }
 
+#bibliotecas-list.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#bibliotecas-list.row > .col-md-6 {
+    display: flex;
+    height: auto;
+}
+
 .biblioteca-item {
     display: flex;
-    flex-direction: column; /* Alinea el contenido verticalmente */
-    justify-content: center; /* Centra el contenido verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
-    height: 100%; /* Asegura que todos los items tengan la misma altura */
-    width: 100%; /* Asegura que todos los items tengan el mismo ancho */
-    max-width: 500px; /* Establece un ancho máximo si lo deseas */
-    margin: auto; /* Centra el item en su contenedor */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
 }
 
 .biblioteca-item .card {
-    flex: 1; /* Permite que la tarjeta ocupe el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
 }
 
-.biblioteca-item img {
-    width: 100%; /* La imagen ocupa todo el ancho del contenedor */
- 
-    object-fit: cover; /* Asegura que la imagen mantenga su proporción y se recorte si es necesario */
-    display: block; /* Asegura que no haya espacios en blanco debajo de la imagen */
+.biblioteca-item .card > .row.g-0 {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    height: 100%;
 }
+
+.biblioteca-item .card .row {
+    display: flex;
+}
+
+.biblioteca-item .card .row .col-md-4 {
+    display: flex;
+    align-items: stretch;
+    flex-shrink: 0;
+    height: 100%;
+    flex: 0 0 auto;
+    width: 40%;
+}
+
+.biblioteca-item .card .row .col-md-4 img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.biblioteca-item .card .row .col-md-8 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    flex: 0 0 auto;
+    width: 60%;
+    height: 100%;
+}
+
+.biblioteca-item .card .row .col-md-8 .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding: 1rem;
+    height: 100%;
+}
+
+.biblioteca-item .card .row .col-md-8 .card-body p {
+    margin-bottom: 0.25rem;
+    padding-bottom: 0;
+}
+
+.biblioteca-item .card .row .col-md-8 .card-body .card-title {
+    margin-bottom: 0.75rem;
+}
+
+#conabip {
+    margin-bottom: 0.75rem;
+}
+
 .bd-sidebar {
-    width: 300px; /* Ajusta según sea necesario */
+    width: 300px;
     padding: 20px;
-    background-color: #f8f9fa; /* Color de fondo para el aside */
-    border-right: 1px solid #dee2e6; /* Borde derecho */
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
 }
 
 .main-content {
-    margin-left: 20px; /* Espacio entre el aside y el contenido principal */
+    margin-left: 20px;
 }
 
-    /* Aseguramos que el contenedor de las cards sea un flex container */
-    #bibliotecas-list.row {
-        display: flex;
-        flex-wrap: wrap; /* Permite que las cards pasen a la siguiente fila en pantallas más pequeñas */
-    }
-
-    /* Hacemos que cada columna que contiene una card crezca para igualar la altura de la fila */
-    #bibliotecas-list.row > .col-md-6 {
-        display: flex;
-        height: auto; /* Permite que la altura se ajuste al contenido más alto */
-    }
-
-    /* Aseguramos que la card dentro de la columna ocupe toda la altura disponible */
-    .biblioteca-item .card {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-    /* Fuerza que la fila dentro de la card ocupe toda la altura */
-    .biblioteca-item .card > .row.g-0 {
-        display: flex;
-        flex-grow: 1; /* Permite que la fila crezca para llenar el espacio */
-        flex-direction: row; /* Asegura que los elementos internos estén en fila */
-        height: 100%; /* Ocupa toda la altura de la card */
-    }
-
+@media (min-width: 768px) and (max-width: 1200px) {
     .biblioteca-item .card .row .col-md-4 {
-        display: flex;
-        align-items: stretch; /* Estira el contenedor de la imagen para que coincida con la altura de la card */
-        flex-shrink: 0; /* Evita que la columna de la imagen se encoja */
-        height: 100%; 
+        width: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        display: none;
     }
 
-    .biblioteca-item .card .row .col-md-4 img {
-        height: 100%;
+    .biblioteca-item .card .row .col-md-8 {
         width: 100%;
-        object-fit: cover; /* Recorta la imagen para llenar el contenedor manteniendo su relación de aspecto */
+        flex: none;
+    }
+}
+
+@media (max-width: 1200px) {
+    .biblioteca-item .card {
+        min-width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .biblioteca-item .card .row .col-md-4 {
+        display: none;
     }
 
-    .biblioteca-item .card .row .col-md-8 {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .biblioteca-item .card .row .col-md-8 .card-body {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        flex-grow: 1; /* Permite que el cuerpo de la card crezca para llenar el espacio */
-        padding: 1rem;
-        height: 100%; /* Asegura que el cuerpo de la card ocupe toda la altura de su contenedor */
-    }
-
-    .biblioteca-item .card .row .col-md-8 .card-body p {
-        margin-bottom: 0.25rem;
-        padding-bottom: 0;
-    }
-
-    .biblioteca-item .card .row .col-md-8 .card-body .card-title {
-        margin-bottom: 0.75rem;
-    }
-
+    #address,
     #conabip {
-        margin-bottom: 0.75rem;
+        display: none;
+    }
+
+    .card-body {
+        padding-left: 1rem;
+        width: 100%;
+    }
+
+    .card-body h5,
+    p,
+    a {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 460px) and (max-width: 768px) {
+    .biblioteca-item .card .row .col-md-4 {
+        display: block;
+    }
+}
+
+@media (max-width: 460px) {
+    #container {
+        flex-direction: column;
+    }
+
+    .bd-sidebar {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .biblioteca-item .card .row .col-md-8 .card-body .btn {
+        display: none;
+    }
+
+    .biblioteca-item .card .row .col-md-8 .card-body h5.card-title {
+        margin-bottom: 0.25rem;
+    }
+
+    .biblioteca-item .card .row {
+        flex-direction: column;
     }
 
     .biblioteca-item .card .row .col-md-4 {
-        flex: 0 0 auto; /* Evita el crecimiento/encogimiento automático */
-        width: 40%; /* Ancho inicial de la columna de la imagen */
+        display: none;
     }
 
     .biblioteca-item .card .row .col-md-8 {
-        flex: 0 0 auto; /* Evita el crecimiento/encogimiento automático */
-        width: 60%; /* Ancho inicial de la columna del texto */
+        width: 100%;
+        flex: none;
     }
 
-    @media (min-width: 768px) and (max-width: 1200px) {
-        .biblioteca-item .card .row .col-md-4 {
-            width: 0; /* La columna de la imagen ocupa cero ancho */
-            padding: 0; /* Elimina el padding para que no ocupe espacio */
-            margin: 0; /* Elimina el margen para que no ocupe espacio */
-            overflow: hidden;
-            display: none; /* Oculta la columna que contiene la imagen */
-        }
-
-        .biblioteca-item .card .row .col-md-8 {
-            width: 100%;
-            flex: none;
-        }
+    .card-body {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        margin-left: 0;
+        margin-right: 0;
+        align-items: center;
     }
-
-    @media (max-width: 1200px) {
-        .biblioteca-item .card {
-            min-width: 100%;
-            justify-content: center;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .biblioteca-item .card .row .col-md-4 {
-            display: none;
-        }
-
-        #address,
-        #conabip {
-            display: none;
-        }
-
-        .card-body {
-            /* align-items: center; */
-            padding-left: 1rem; /* Reduzco el padding para pantallas más pequeñas */
-            width: 100%;
-        }
-
-        .card-body h5,
-        p,
-        a {
-            font-size: 1rem;
-        }
-    }
-
-    @media (min-width: 460px) and (max-width: 768px){
-        .biblioteca-item .card .row .col-md-4 {
-            display:block;
-        }
-    }
- 
-        /* Nuevos estilos para pantallas menores de 460px */
-        @media (max-width: 460px) {
-        #container {
-            flex-direction: column; /* Apila los elementos verticalmente */
-        }
-
-        .bd-sidebar {
-            width: 100%; /* El aside ocupa todo el ancho */
-            margin-bottom: 1rem; /* Espacio entre el aside y la lista */
-        }
-
-        .main-content {
-            width: 100%; /* El contenido principal también ocupa todo el ancho */
-        }
-
-        .biblioteca-item .card .row .col-md-8 .card-body .btn {
-            display: none; /* Oculta el botón "Ver biblioteca" */
-        }
-
-        .biblioteca-item .card .row .col-md-8 .card-body h5.card-title {
-            /* Convertimos el título en un enlace */
-            margin-bottom: 0.25rem; /* Reducimos el margen inferior del título */
-        }
-        .biblioteca-item .card .row {
-            flex-direction: column;/* Apilamos la columna de la imagen (oculta) y la del texto */
-        }
-
-        .biblioteca-item .card .row .col-md-4 {
-            display: none; /* Aseguramos que la columna de la imagen esté oculta */
-        }
-
-        .biblioteca-item .card .row .col-md-8 {
-            width: 100%; /* La columna del texto ocupa todo el ancho */
-            flex: none; /* Evitamos que se encoja o crezca de forma flexible */
-        }
-        .card-body {
-            padding-left: 0.5rem; /* Reducimos el padding izquierdo */
-            padding-right: 0.5rem; /* Reducimos el padding derecho */
-            padding-top: 0.5rem;   /* Reducimos el padding superior */
-            padding-bottom: 0.5rem;/* Reducimos el padding inferior */
-            margin-left: 0;      /* Eliminamos el margen izquierdo */
-            margin-right: 0;     /* Eliminamos el margen derecho */
-            align-items: center;
-        }
-    }
+}
