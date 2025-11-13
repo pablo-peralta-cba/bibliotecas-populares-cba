@@ -80,7 +80,7 @@ const scriptSrcUrls = [
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com/", // add this
+    "https://cdn.maptiler.com/", 
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -88,10 +88,10 @@ const styleSrcUrls = [
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
     "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com/", // add this
+    "https://cdn.maptiler.com/", 
 ];
 const connectSrcUrls = [
-    "https://api.maptiler.com/", // add this
+    "https://api.maptiler.com/", 
 ];
 const fontSrcUrls = [
     'https://cdn.jsdelivr.net/npm/bootstrap-icons/'
@@ -112,9 +112,10 @@ app.use(
                 "'self'",
                 "blob:",
                 "data:",
-                "https://res.cloudinary.com/dj9swckra/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+                "https://res.cloudinary.com/dj9swckra/",
                 "https://images.unsplash.com/",
                 "https://api.maptiler.com/",
+                "*.maptiler.com"
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },

@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.innerWidth <= 460) {
             cardTitles.forEach((title, index) => {
                 const link = bibliotecaItems[index].querySelector('.card-body .btn-primary');
-                if (link && !title.querySelector('a')) { // Verificamos que el título no sea ya un enlace
+                if (link && !title.querySelector('a')) { 
                     const href = link.getAttribute('href');
                     const anchor = document.createElement('a');
                     anchor.href = href;
                     anchor.textContent = title.textContent;
-                    anchor.classList.add('card-link'); // Opcional: añade una clase para estilos
-                    title.textContent = ''; // Limpiamos el texto original del h5
-                    title.appendChild(anchor); // Insertamos el enlace dentro del h5
+                    anchor.classList.add('card-link'); 
+                    title.textContent = '';
+                    title.appendChild(anchor); 
                 }
             });
         } else {
@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Ejecutamos la función al cargar la página
+ 
     convertTitleToLink();
 
-    // Ejecutamos la función cada vez que se redimensiona la ventana
+
     window.addEventListener('resize', convertTitleToLink);
 });
 
@@ -39,11 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.querySelector('form');
-            // Se puede añadir un evento submit para manejar la búsqueda
+         
             form.addEventListener('submit', (event) => {
-                event.preventDefault(); // Prevenir el envío predeterminado del formulario
+                event.preventDefault();
                 const queryString = new URLSearchParams(new FormData(form)).toString();
-                window.location.href = `/bibliotecas?${queryString}`; // Redirigir a la URL con los parámetros de búsqueda
+                window.location.href = `/bibliotecas?${queryString}`; 
             });
         });
 
