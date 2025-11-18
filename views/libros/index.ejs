@@ -1,67 +1,89 @@
-
 <% layout('./layouts/boilerplate') %>
 
-<div class="container d-flex justify-content-center align-items-center mt-5">
-    <div class="row">
-        
-<div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
-    <div class="card shadow">
-        <img src="https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/jessica-ruscello-OQSCtabGkSY-unsplash_tgln9i.jpg"
-        alt="" class="card-img-top" /> 
+<div
+  class="container d-flex justify-content-center align-items-center my-2 mb-md-4"
+>
+  <div class="row">
+    <div class="col-md-6 col-xl-4 offset-md-3 offset-xl-4">
+      <div class="card shadow">
+        <img
+          src="https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/jessica-ruscello-OQSCtabGkSY-unsplash_tgln9i.jpg"
+          alt=""
+          class="card-img-top"
+        />
         <div class="card-body justify-content-center">
+          <h2 class="card-title text-center"><%= title %></h2>
 
-    <h2 class="card-title text-center"><%= title %></h2>
+          <% if (isGeneral) { %>
+          <p>Este es el catálogo general de libros.</p>
+          <% } else { %>
+          <p>Catálogo de la biblioteca.</p>
+          <% } %>
+          <!-- Formulario de búsqueda -->
+          <form method="GET" action="/libros/buscar" class="mb-3">
+            <div class="mb-3">
+              <label class="form-label" for="titulo">Título</label>
+              <input
+                autofocus
+                class="form-control"
+                type="text"
+                name="titulo"
+                id="titulo"
+                placeholder="Buscar por título"
+                autofocus
+              />
+            </div>
 
-    <% if (isGeneral) { %>
-        <p>Este es el catálogo general de libros.</p>
-    <% } else { %>
-        <p>Catálogo de la biblioteca.</p>
-    <% } %>
-       <!-- Formulario de búsqueda -->
-            <form method="GET" action="/libros/buscar" class="mb-3">
-                <div class="mb-3">
-                    <label class="form-label" for="titulo">Título</label>
-                    <input autofocus class="form-control" type="text" name="titulo" id="titulo"  placeholder="Buscar por título" autofocus>
-                </div>
-    
-                <div class="mb-3">
-                    <label class="form-label" for="autor">Autor/a</label>
-                    <input class="form-control" type="text" name="autor" placeholder="Buscar por autor" id="autor">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="genero">Género</label>
-                    <input class="form-control" type="text" name="genero" placeholder="Buscar por género"  id="genero">
-                </div>
-                <button class="btn btn-primary btn-block" type="submit">Buscar</button>
-            </form>     
-            
-           
+            <div class="mb-3">
+              <label class="form-label" for="autor">Autor/a</label>
+              <input
+                class="form-control"
+                type="text"
+                name="autor"
+                placeholder="Buscar por autor"
+                id="autor"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="genero">Género</label>
+              <input
+                class="form-control"
+                type="text"
+                name="genero"
+                placeholder="Buscar por género"
+                id="genero"
+              />
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">
+              Buscar
+            </button>
+          </form>
 
-
-   <!-- Mostrar la lista de libros solo si hay resultados -->
-   <% if (isBusqueda) { %>
-    <% if (libros && libros.length > 0) { %>
-        <ul>
+          <!-- Mostrar la lista de libros solo si hay resultados -->
+          <% if (isBusqueda) { %> <% if (libros && libros.length > 0) { %>
+          <ul>
             <% libros.forEach(libro => { %>
-                <li><a href="/libros/<%= libro._id %>"><%= libro.titulo %></a></li>
+            <li><a href="/libros/<%= libro._id %>"><%= libro.titulo %></a></li>
             <% }) %>
-        </ul>
-    <% } else { %>
-        <p>No se encontraron libros que coincidan con tu búsqueda.</p>
-    <% } %>
-<% } else { %>
-    <!-- Solo mostrar este mensaje si no se ha realizado ninguna búsqueda -->
-    <p>Introduce un criterio de búsqueda y haz clic en "Buscar".</p>
-<% } %>
-     <!-- Enlace para volver al catálogo general si es un catálogo de biblioteca -->
-            <% if (!isGeneral) { %>
-                <a href="/libros" class="btn btn-info mb-3">Ir al archivo de todas las bibliotecas</a>
-            <% } %>
-    <% if (!isGeneral) { %>
-        <a href="/bibliotecas/<%= biblioteca._id %>" class="btn btn-info mb-3">Volver a la biblioteca</a>
-    <% } %>
-</div>
-</div>
-</div>
-</div>
+          </ul>
+          <% } else { %>
+          <p>No se encontraron libros que coincidan con tu búsqueda.</p>
+          <% } %> <% } else { %>
+          <!-- Solo mostrar este mensaje si no se ha realizado ninguna búsqueda -->
+          <p>Introduce un criterio de búsqueda y haz clic en "Buscar".</p>
+          <% } %>
+          <!-- Enlace para volver al catálogo general si es un catálogo de biblioteca -->
+          <% if (!isGeneral) { %>
+          <a href="/libros" class="btn btn-info mb-3"
+            >Ir al archivo de todas las bibliotecas</a
+          >
+          <% } %> <% if (!isGeneral) { %>
+          <a href="/bibliotecas/<%= biblioteca._id %>" class="btn btn-info mb-3"
+            >Volver a la biblioteca</a
+          >
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
