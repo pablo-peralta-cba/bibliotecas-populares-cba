@@ -1,33 +1,57 @@
-<% const title= 'Nuevo Contacto' %>
-<% layout('layouts/boilerplate') %>
+<% const title= 'Nuevo Contacto' %> <% layout('layouts/boilerplate') %>
 
-<div class="container d-flex justify-content-center align-items-center mt-5">
-    <div class="row">
-        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
-            <div class="card shadow">
-                <img src="https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/seven-shooter-hPKTYwJ4FUo-unsplash_fomis1.jpg"
-                alt="" class="card-img-top" /> 
-              <div class="card-body">
-                <h5 class="card-title">Contacto</h5>
-                <form action="/contacto" method="post">
-                    <div class="mb-3">
-                  <label class="form-label" for="nombre">Nombre:</label>
-                  <input autofocus class="form-control" type="text" id="nombre" name="nombre" required>
-                   </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="email">Email:</label>
-                    <input class="form-control" type="email" name="email" id="email" required>
-                 </div>
-            
-                  <div class="mb-3">
-                  <label class="form-label" for="mensaje">Mensaje:</label>
-                  <textarea class="form-control" id="mensaje" name="mensaje"  cols="10" rows="5" required></textarea>
-                 </div>
-
-                  <button class="btn w-100 btn-success">Enviar</button>
-                </form>
-             </div>
+<div
+  class="container d-flex justify-content-center align-items-center my-2 mb-md-4"
+>
+  <div class="row">
+    <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+      <div class="card shadow">
+        <img
+          src="https://res.cloudinary.com/dj9swckra/image/upload/v1728389890/seven-shooter-hPKTYwJ4FUo-unsplash_fomis1.jpg"
+          alt=""
+          class="card-img-top"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Contacto</h5>
+          <form action="/contacto" method="post">
+            <div class="mb-3">
+              <label class="form-label" for="nombre">Nombre:</label>
+              <input
+                autofocus
+                class="form-control"
+                type="text"
+                id="nombre"
+                name="nombre"
+                required
+              />
             </div>
+            <div class="mb-3">
+              <label class="form-label" for="email">Email:</label>
+              <input
+                class="form-control"
+                type="email"
+                name="email"
+                id="email"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="mensaje">Mensaje:</label>
+              <textarea
+                class="form-control"
+                id="mensaje"
+                name="mensaje"
+                cols="10"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+
+            <button class="btn w-100 btn-success">Enviar</button>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>
