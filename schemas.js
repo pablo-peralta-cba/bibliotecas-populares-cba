@@ -1,30 +1,27 @@
-// En este documento vamos a incluir server side validation
-// para lo cual usamos Joi, que tenemos que descargar y requerir
+// Server side validation
 const baseJoi = require('joi');
 const { validate } = require('./modelos/reviews');
- //este package limpia de HTML tags o sintaxis a las queries 
-//  y requests de los usuarios, con lo que evitamos vulnerabilidad en la seguridad 
 const sanitizeHtml = require('sanitize-html');
 
-
 const extension = (joi) => ({
-    type: 'string',
-    base: joi.string(),
-    messages: {
-        'string.escapeHTML': '{{#label}} must not include HTML'
+  type: 'string',
+  base: joi.string(),
+  messages: {
+    'string.escapeHTML': '{{#label}} must not include HTML',
+  },
+  rules: {
+    escapeHTML: {
+      validate(value, helpers) {
+        const clean = sanitizeHtml(value, {
+          allowedTags: [],
+          allowedAttributes: {},
+        });
+        if (clean !== value)
+          return helpers.error('string.escapeHTML', { value });
+        return clean;
+      },
     },
-    rules: {
-        escapeHTML: {
-            validate(value, helpers) {
-                const clean = sanitizeHtml(value, {
-                    allowedTags: [],
-                    allowedAttributes: {},
-                });
-                if (clean !== value) return helpers.error('string.escapeHTML', {value});
-                return clean;
-            }
-        }
-    }
+  },
 });
 
 // aca agregamos la funcion que acabamos de crear (de limpiar las queries de HTML)
@@ -32,55 +29,68 @@ const extension = (joi) => ({
 const Joi = baseJoi.extend(extension);
 
 module.exports.biblioSchema = baseJoi.object({
-    biblioteca: Joi.object({
-        nombre: Joi.string().required().escapeHTML(),
-        localidad: Joi.string().required().escapeHTML(),
-        registroConabip: Joi.number().required().min(0),
-        telefono: Joi.string().required(),
-        opcionesTelefono: Joi.string().valid('Solo llamadas', 'Llamadas y WhatsApp', 'Solo WhatsApp'),
-        direccion: Joi.string().required().escapeHTML(),
-        actividades: Joi.string().required().escapeHTML(),
-        horario: Joi.string().required().escapeHTML(),
-        redes: baseJoi.array().items(
-            baseJoi.object({
-                nombre: baseJoi.string().valid('instagram', 'facebook', 'X', 'mail').required(),
-                checked: baseJoi.boolean().required(),
-                link: baseJoi.string().when('checked', {
-                    is: true,
-                    then: Joi.required(),
-                    otherwise: Joi.optional(),
-                }).allow('', null).optional() // Permite un string vacío para el link
-            }).optional()
-        ).optional(),
-        catalogoLibros: baseJoi.array().items(
-            Joi.string()
-        ).optional(),
-        // image: joi.string().optional()
-        geometry: Joi.object({
-            existe: Joi.string().valid('Point').optional(), // Puede ser 'Point', opcional
-            coordinates: Joi.array().items(Joi.number()).length(2).optional() // Dos números para longitud y latitud
-        }).optional(),
-        cuota: Joi.number().required().min(0),
-             // Validar que `deleteImages` sea un array de cadenas (public_ids)
-        deleteImages: Joi.array().items(Joi.string().required()).optional(), // Permite arrays vacíos también,
-        deleteLibros: Joi.array().optional(),
-}).unknown(true) // Permite campos no definidos
+  biblioteca: Joi.object({
+    nombre: Joi.string().required().escapeHTML(),
+    localidad: Joi.string().required().escapeHTML(),
+    registroConabip: Joi.number().required().min(0),
+    telefono: Joi.string().required(),
+    opcionesTelefono: Joi.string().valid(
+      'Solo llamadas',
+      'Llamadas y WhatsApp',
+      'Solo WhatsApp'
+    ),
+    direccion: Joi.string().required().escapeHTML(),
+    actividades: Joi.string().required().escapeHTML(),
+    horario: Joi.string().required().escapeHTML(),
+    redes: baseJoi
+      .array()
+      .items(
+        baseJoi
+          .object({
+            nombre: baseJoi
+              .string()
+              .valid('instagram', 'facebook', 'X', 'mail')
+              .required(),
+            checked: baseJoi.boolean().required(),
+            link: baseJoi
+              .string()
+              .when('checked', {
+                is: true,
+                then: Joi.required(),
+                otherwise: Joi.optional(),
+              })
+              .allow('', null)
+              .optional(), // Permite un string vacío para el link
+          })
+          .optional()
+      )
+      .optional(),
+    catalogoLibros: baseJoi.array().items(Joi.string()).optional(),
+    // image: joi.string().optional()
+    geometry: Joi.object({
+      existe: Joi.string().valid('Point').optional(), // Puede ser 'Point', opcional
+      coordinates: Joi.array().items(Joi.number()).length(2).optional(), // Dos números para longitud y latitud
+    }).optional(),
+    cuota: Joi.number().required().min(0),
+    // Validar que `deleteImages` sea un array de cadenas (public_ids)
+    deleteImages: Joi.array().items(Joi.string().required()).optional(), // Permite arrays vacíos también,
+    deleteLibros: Joi.array().optional(),
+  }).unknown(true), // Permite campos no definidos
 });
 
-
 module.exports.reviewSchema = Joi.object({
-    review: Joi.object({
-        rating: Joi.number().required().min(1).max(5),
-        body: Joi.string().required().escapeHTML(),
-    }).required()
-})
+  review: Joi.object({
+    rating: Joi.number().required().min(1).max(5),
+    body: Joi.string().required().escapeHTML(),
+  }).required(),
+});
 
 module.exports.libroSchema = Joi.object({
-    libro: Joi.object({
-        titulo: Joi.string().required().escapeHTML(),
-        autor: Joi.string().required().escapeHTML(),
-        codigoCat: Joi.string().required().escapeHTML(),
-        genero: Joi.string().optional().escapeHTML(),
-        publishYear: Joi.number().optional(),
-    }).required()
+  libro: Joi.object({
+    titulo: Joi.string().required().escapeHTML(),
+    autor: Joi.string().required().escapeHTML(),
+    codigoCat: Joi.string().required().escapeHTML(),
+    genero: Joi.string().optional().escapeHTML(),
+    publishYear: Joi.number().optional(),
+  }).required(),
 });

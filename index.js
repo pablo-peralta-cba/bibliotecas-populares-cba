@@ -63,7 +63,6 @@ const sessionSetup = {
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
@@ -141,10 +140,10 @@ app.use('/', usuarios);
 //app.use('/bibliotecas/:id/libros', libros); // Rutas específicas para libros de cada biblioteca
 
 // Ruta para el catálogo general de libros
-app.use('/libros', libros); // Esta podría ser la ruta general para acceder a todos los libros
+app.use('/libros', libros);
 app.use('/info', info);
 
-app.locals.title = 'Bibliotecas Populares Córdoba'; // Establece un valor por defecto global para todas las vistas
+app.locals.title = 'Bibliotecas Populares Córdoba';
 
 app.get('/', (req, res) => {
   res.render('home', { title: 'Bibliotecas Populares Córdoba' });
@@ -157,8 +156,6 @@ app.all('*', (req, res, next) => {
 
 // Manejo de errores
 app.use((err, req, res, next) => {
-  // req.flash('error', 'Se encontraron datos erróneos en la búsqueda');
-  // return res.redirect('/bibliotecas');
   const { statusCode = 500 } = err;
   res.status(statusCode).render('error', { err });
 });
