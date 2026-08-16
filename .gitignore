@@ -1,2 +1,11 @@
 node_modules
 .env
+client-dist/
+
+# Ignorar planes e historiales temporales de OpenCode
+.opencode/plan/
+.opencode/history/
+
+# Mantener los agentes y skills en Git:
+! .opencode/agents/
+! .opencode/skills/

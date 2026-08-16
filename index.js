@@ -16,6 +16,7 @@ const ejsMate = require('ejs-mate');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const MongoStore = require('connect-mongo');
+const cors = require('cors');
 
 // Modelos
 const Biblioteca = require('./modelos/biblioteca');
@@ -41,6 +42,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+// Serve React build output
+app.use(express.static(path.join(__dirname, 'client-dist')));
+
+// CORS configuration for development
+if (process.env.NODE_ENV !== 'production') {
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+  }));
+}
+
 const secret = process.env.SECRET || 'chisme';
 
 const store = MongoStore.create({
@@ -143,10 +155,31 @@ app.use('/', usuarios);
 app.use('/libros', libros);
 app.use('/info', info);
 
+// API Routes (for React SPA)
+const apiBibliotecas = require('./routes/api/bibliotecas');
+const apiLibros = require('./routes/api/libros');
+const apiUsuarios = require('./routes/api/usuarios');
+const apiReviews = require('./routes/api/reviews');
+const apiInfo = require('./routes/api/info');
+app.use('/api/bibliotecas', apiBibliotecas);
+app.use('/api/libros', apiLibros);
+app.use('/api', apiUsuarios);
+app.use('/api/bibliotecas/:id/reviews', apiReviews);
+app.use('/api/info', apiInfo);
+
 app.locals.title = 'Bibliotecas Populares Córdoba';
 
 app.get('/', (req, res) => {
-  res.render('home', { title: 'Bibliotecas Populares Córdoba' });
+  res.render('home', { title: 'Bibliotecas Populares Cordoba' });
+});
+
+// Catch-all: serve React app for any non-API route
+app.get('*', (req, res, next) => {
+  // Skip API routes — they handle their own responses
+  if (req.path.startsWith('/api')) return next();
+  
+  // Serve React SPA for all other routes
+  res.sendFile(path.join(__dirname, 'client-dist', 'index.html'));
 });
 
 // Middleware para manejar rutas no encontradas
