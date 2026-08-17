@@ -7,6 +7,9 @@ const catchAsync = require('../../utilities/catchAsync');
 const { storage } = require('../../cloudinary/index');
 const maptilerClient = require('@maptiler/client');
 const {
+  escapeRegex,
+} = require('../../utilities/regexEscape');
+const {
   apiEstaLogueado,
   apiVerificarEmail,
   apiEsAutor,
@@ -28,10 +31,10 @@ router.get('/', catchAsync(async (req, res) => {
     query.registroConabip = codigoConabip;
   } else {
     if (nombre) {
-      query.nombre = { $regex: new RegExp(nombre, 'i') };
+      query.nombre = { $regex: new RegExp(escapeRegex(nombre), 'i') };
     }
     if (localidad) {
-      query.localidad = { $regex: new RegExp(localidad, 'i') };
+      query.localidad = { $regex: new RegExp(escapeRegex(localidad), 'i') };
     }
   }
 
@@ -91,6 +94,12 @@ router.post(
     });
   })
 );
+
+// GET /api/bibliotecas/all - All bibliotecas for map (lightweight, no pagination)
+router.get('/all', catchAsync(async (req, res) => {
+  const bibliotecas = await Biblioteca.find({}, 'nombre localidad geometry registroConabip');
+  res.json({ bibliotecas });
+}));
 
 // GET /api/bibliotecas/:id - Get single biblioteca (public)
 router.get('/:id', catchAsync(async (req, res) => {
@@ -192,9 +201,9 @@ router.get('/:id/libros', catchAsync(async (req, res) => {
   }
 
   let query = { biblioteca: id };
-  if (titulo) query.titulo = { $regex: titulo, $options: 'i' };
-  if (autor) query.autor = { $regex: autor, $options: 'i' };
-  if (genero) query.genero = { $regex: genero, $options: 'i' };
+  if (titulo) query.titulo = { $regex: escapeRegex(titulo), $options: 'i' };
+  if (autor) query.autor = { $regex: escapeRegex(autor), $options: 'i' };
+  if (genero) query.genero = { $regex: escapeRegex(genero), $options: 'i' };
 
   const isBusqueda = titulo || autor || genero;
   let libros = [];

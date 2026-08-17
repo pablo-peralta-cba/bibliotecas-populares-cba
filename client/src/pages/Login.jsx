@@ -15,8 +15,12 @@ export default function Login() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await login(data);
-      navigate('/bibliotecas');
+      const result = await login(data);
+      if (result.needsVerification) {
+        navigate('/espera-verificacion', { state: { email: result.user.email } });
+      } else {
+        navigate('/bibliotecas');
+      }
     } catch (err) {
       showError(err.error || 'Credenciales inválidas');
     } finally {

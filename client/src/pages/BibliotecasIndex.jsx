@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { getBibliotecas } from '../api/bibliotecas';
+import { getBibliotecas, getAllBibliotecas } from '../api/bibliotecas';
 import ClusterMap from '../components/maps/ClusterMap';
 
 function toGeoJson(bibliotecas) {
@@ -23,6 +23,7 @@ const DEFAULT_IMAGE = 'https://res.cloudinary.com/dj9swckra/image/upload/v172838
 export default function BibliotecasIndex() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [bibliotecas, setBibliotecas] = useState([]);
+  const [allBibliotecas, setAllBibliotecas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,12 @@ export default function BibliotecasIndex() {
   const page = parseInt(searchParams.get('page')) || 1;
 
   useEffect(() => {
+    getAllBibliotecas()
+      .then(data => setAllBibliotecas(data.bibliotecas))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     fetchBibliotecas();
   }, [searchParams]);
 
@@ -41,13 +48,13 @@ export default function BibliotecasIndex() {
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams();
-      if (nombre) params.set('nombre', nombre);
-      if (localidad) params.set('localidad', localidad);
-      if (codigoConabip) params.set('codigoConabip', codigoConabip);
-      if (page > 1) params.set('page', page);
+      const queryObj = {};
+      if (nombre) queryObj.nombre = nombre;
+      if (localidad) queryObj.localidad = localidad;
+      if (codigoConabip) queryObj.codigoConabip = codigoConabip;
+      if (page > 1) queryObj.page = page;
 
-      const data = await getBibliotecas(params.toString());
+      const data = await getBibliotecas(queryObj);
       setBibliotecas(data.bibliotecas);
       setCurrentPage(data.currentPage);
       setTotalPages(data.totalPages);
@@ -77,7 +84,7 @@ export default function BibliotecasIndex() {
     setSearchParams(params);
   }
 
-  const geoJson = toGeoJson(bibliotecas);
+  const geoJson = toGeoJson(allBibliotecas.length ? allBibliotecas : bibliotecas);
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4">

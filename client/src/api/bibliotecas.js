@@ -1,5 +1,9 @@
 import { apiGet, apiPost, apiPut, apiDelete, apiUpload } from './client';
 
+export async function getAllBibliotecas() {
+  return apiGet('/bibliotecas/all');
+}
+
 export async function getBibliotecas(query = {}) {
   const params = new URLSearchParams();
   if (query.page) params.append('page', query.page);

@@ -1,6 +1,33 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useFlash } from '../context/FlashContext';
+import { resendVerification } from '../api/auth';
 
 export default function EsperaVerificacion() {
+  const location = useLocation();
+  const { showSuccess, showError } = useFlash();
+  const [email, setEmail] = useState(location.state?.email || '');
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleResend = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      showError('Por favor, ingresá tu email');
+      return;
+    }
+    setLoading(true);
+    try {
+      await resendVerification(email);
+      setSent(true);
+      showSuccess('Si el email está registrado, recibirás un correo de verificación.');
+    } catch (err) {
+      showError(err.error || 'Error al enviar el correo');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center my-16 px-4">
       <div className="w-full max-w-md">
@@ -19,9 +46,36 @@ export default function EsperaVerificacion() {
           <p className="text-gray-500 text-sm mb-6">
             ¿No recibiste el correo? Revisá tu carpeta de spam o junk.
           </p>
+          
+          {!sent ? (
+            <form onSubmit={handleResend} className="mb-6">
+              <div className="mb-4">
+                <input
+                  type="email"
+                  placeholder="Tu email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              >
+                {loading ? 'Enviando...' : 'Reenviar correo de verificación'}
+              </button>
+            </form>
+          ) : (
+            <p className="text-green-600 mb-6">
+              Correo enviado. Revisá tu bandeja de entrada.
+            </p>
+          )}
+
           <Link
             to="/login"
-            className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-block bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
           >
             Ir a Login
           </Link>

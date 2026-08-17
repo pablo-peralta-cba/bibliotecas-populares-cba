@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
+  const isVerified = user?.isVerified;
 
   const handleLogout = async () => {
     await logout();
@@ -50,9 +51,11 @@ export default function Navbar() {
                 <NavLink to="/bibliotecas" className="block px-4 py-2 hover:bg-gray-100">
                   Ver bibliotecas
                 </NavLink>
-                <NavLink to="/bibliotecas/nueva" className="block px-4 py-2 hover:bg-gray-100">
-                  Agregar biblioteca
-                </NavLink>
+                {isVerified && (
+                  <NavLink to="/bibliotecas/nueva" className="block px-4 py-2 hover:bg-gray-100">
+                    Agregar biblioteca
+                  </NavLink>
+                )}
                 <NavLink to="/bibliotecas/que-es" className="block px-4 py-2 hover:bg-gray-100">
                   Que es una biblioteca
                 </NavLink>
@@ -103,9 +106,11 @@ export default function Navbar() {
             <NavLink to="/bibliotecas" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
               Bibliotecas
             </NavLink>
-            <NavLink to="/bibliotecas/nueva" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-              Agregar biblioteca
-            </NavLink>
+            {isVerified && (
+              <NavLink to="/bibliotecas/nueva" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
+                Agregar biblioteca
+              </NavLink>
+            )}
             <NavLink to="/info/legislacion" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
               Legislacion
             </NavLink>

@@ -194,12 +194,14 @@ export default function BiblioDetails() {
               >
                 Ver Catálogo
               </Link>
-              <Link
-                to={`/bibliotecas/${id}/libros/nuevo`}
-                className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
-              >
-                Agregar Libro
-              </Link>
+              {isAuthor && (
+                <Link
+                  to={`/libros/bibliotecas/${id}/nuevo`}
+                  className="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700"
+                >
+                  Agregar Libro
+                </Link>
+              )}
             </div>
           </div>
 

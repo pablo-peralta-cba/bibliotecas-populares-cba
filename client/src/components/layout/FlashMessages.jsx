@@ -1,9 +1,9 @@
 import { useFlash } from '../../context/FlashContext';
 
 export default function FlashMessages() {
-  const { success, error, clearFlash } = useFlash();
+  const { success, error, warning, clearFlash } = useFlash();
 
-  if (success.length === 0 && error.length === 0) {
+  if (success.length === 0 && error.length === 0 && warning.length === 0) {
     return null;
   }
 
@@ -18,6 +18,20 @@ export default function FlashMessages() {
           <button
             onClick={clearFlash}
             className="text-green-700 hover:text-green-900"
+          >
+            &times;
+          </button>
+        </div>
+      ))}
+      {warning.map((message, index) => (
+        <div
+          key={`warning-${index}`}
+          className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-2 flex justify-between items-center"
+        >
+          <span>{message}</span>
+          <button
+            onClick={clearFlash}
+            className="text-yellow-700 hover:text-yellow-900"
           >
             &times;
           </button>

@@ -6,6 +6,7 @@ const FlashContext = createContext(null);
 export function FlashProvider({ children }) {
   const [success, setSuccess] = useState([]);
   const [error, setError] = useState([]);
+  const [warning, setWarning] = useState([]);
 
   const showSuccess = useCallback((message) => {
     setSuccess((prev) => [...prev, message]);
@@ -21,21 +22,31 @@ export function FlashProvider({ children }) {
     }, 5000);
   }, []);
 
+  const showWarning = useCallback((message) => {
+    setWarning((prev) => [...prev, message]);
+    setTimeout(() => {
+      setWarning((prev) => prev.slice(1));
+    }, 5000);
+  }, []);
+
   const clearFlash = useCallback(() => {
     setSuccess([]);
     setError([]);
+    setWarning([]);
   }, []);
 
   // Wire flash handlers to API client on mount
   useEffect(() => {
-    setFlashHandlers({ showSuccess, showError });
-  }, [showSuccess, showError]);
+    setFlashHandlers({ showSuccess, showError, showWarning });
+  }, [showSuccess, showError, showWarning]);
 
   const value = {
     success,
     error,
+    warning,
     showSuccess,
     showError,
+    showWarning,
     clearFlash,
   };
 

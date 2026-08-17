@@ -3,6 +3,7 @@ const router = express.Router();
 const Libro = require('../../modelos/libro');
 const Biblioteca = require('../../modelos/biblioteca');
 const catchAsync = require('../../utilities/catchAsync');
+const { escapeRegex } = require('../../utilities/regexEscape');
 const {
   apiEstaLogueado,
   apiVerificarEmail,
@@ -17,25 +18,9 @@ router.get('/', catchAsync(async (req, res) => {
   let query = {};
 
   if (isBusqueda) {
-    if (titulo) query.titulo = { $regex: titulo, $options: 'i' };
-    if (autor) query.autor = { $regex: autor, $options: 'i' };
-    if (genero) query.genero = { $regex: genero, $options: 'i' };
-  }
-
-  const libros = isBusqueda ? await Libro.find(query).populate('biblioteca') : [];
-  res.json({ libros, isBusqueda });
-}));
-
-// GET /api/libros/buscar - Search books (public, alias for / with explicit search)
-router.get('/buscar', catchAsync(async (req, res) => {
-  const { titulo, autor, genero } = req.query;
-  const isBusqueda = titulo || autor || genero;
-  let query = {};
-
-  if (isBusqueda) {
-    if (titulo) query.titulo = { $regex: titulo, $options: 'i' };
-    if (autor) query.autor = { $regex: autor, $options: 'i' };
-    if (genero) query.genero = { $regex: genero, $options: 'i' };
+    if (titulo) query.titulo = { $regex: escapeRegex(titulo), $options: 'i' };
+    if (autor) query.autor = { $regex: escapeRegex(autor), $options: 'i' };
+    if (genero) query.genero = { $regex: escapeRegex(genero), $options: 'i' };
   }
 
   const libros = isBusqueda ? await Libro.find(query).populate('biblioteca') : [];

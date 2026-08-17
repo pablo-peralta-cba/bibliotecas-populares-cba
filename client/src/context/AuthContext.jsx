@@ -6,6 +6,7 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [needsVerification, setNeedsVerification] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -15,9 +16,11 @@ export function AuthProvider({ children }) {
     try {
       const data = await getCurrentUser();
       setUser(data.user);
+      setNeedsVerification(data.user ? !data.user.isVerified : false);
     } catch (error) {
       console.error('Auth check failed:', error);
       setUser(null);
+      setNeedsVerification(false);
     } finally {
       setLoading(false);
     }
@@ -37,7 +40,12 @@ export function AuthProvider({ children }) {
   async function logout() {
     const data = await apiLogout();
     setUser(null);
+    setNeedsVerification(false);
     return data;
+  }
+
+  async function refreshUser() {
+    await checkAuth();
   }
 
   const value = {
@@ -46,7 +54,9 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    refreshUser,
     isAuthenticated: !!user,
+    needsVerification,
   };
 
   return (

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Biblioteca = require('./biblioteca');
 
 const libroSchema = new Schema({
   titulo: {

@@ -15,8 +15,12 @@ export default function Registro() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
+      // Honeypot check - bots will fill this field
+      if (data.website) {
+        return; // Silently reject bots
+      }
       await registerUser(data);
-      navigate('/espera-verificacion');
+      navigate('/espera-verificacion', { state: { email: data.email } });
     } catch (err) {
       showError(err.error || 'Error al crear la cuenta');
     } finally {
@@ -95,6 +99,18 @@ export default function Registro() {
                   </button>
                 </div>
                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+              </div>
+
+              {/* Honeypot field - hidden from humans, bots will fill it */}
+              <div className="absolute opacity-0 pointer-events-none h-0 overflow-hidden" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  tabIndex="-1"
+                  autoComplete="off"
+                  {...register('website')}
+                />
               </div>
 
               <button

@@ -20,6 +20,6 @@ export async function verifyEmail(token) {
   return apiGet(`/auth/verify/${token}`);
 }
 
-export async function sendContact(data) {
-  return apiPost('/contacto', data);
+export async function resendVerification(email) {
+  return apiPost('/auth/resend-verification', { email });
 }

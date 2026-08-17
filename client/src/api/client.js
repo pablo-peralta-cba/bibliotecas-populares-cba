@@ -1,6 +1,6 @@
 const BASE = '/api';
 
-let flashHandlers = { showSuccess: () => {}, showError: () => {} };
+let flashHandlers = { showSuccess: () => {}, showError: () => {}, showWarning: () => {} };
 
 export function setFlashHandlers(handlers) {
   flashHandlers = handlers;
@@ -33,6 +33,9 @@ async function request(path, options = {}) {
     if (data.flash) {
       if (data.flash.success?.length) {
         data.flash.success.forEach((msg) => flashHandlers.showSuccess(msg));
+      }
+      if (data.flash.warning?.length) {
+        data.flash.warning.forEach((msg) => flashHandlers.showWarning(msg));
       }
       if (data.flash.error?.length) {
         data.flash.error.forEach((msg) => flashHandlers.showError(msg));

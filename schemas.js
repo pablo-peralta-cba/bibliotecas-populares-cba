@@ -1,6 +1,5 @@
 // Server side validation
 const baseJoi = require('joi');
-const { validate } = require('./modelos/reviews');
 const sanitizeHtml = require('sanitize-html');
 
 const extension = (joi) => ({
