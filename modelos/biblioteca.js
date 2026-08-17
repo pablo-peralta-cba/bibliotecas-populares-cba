@@ -1,4 +1,3 @@
-const { required } = require('joi');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Review = require('./reviews');
@@ -11,22 +10,11 @@ const imageSchema = new Schema({
   filename: {
     type: String,
   },
-  secure_url: {
-    type: String,
-  },
-  public_id: {
-    type: String, //ID público de Cloudinary
-  },
-});
-
-imageSchema.virtual('thumbnail').get(function () {
-  return this.url.replace('/upload', '/upload/w_200');
 });
 
 const biblioSchema = new Schema(
   {
     images: [imageSchema],
-    description: String,
     nombre: {
       type: String,
       required: true,
@@ -96,6 +84,7 @@ const biblioSchema = new Schema(
     registroConabip: {
       type: Number,
       required: true,
+      unique: true,
     },
     catalogoLibros: [{ type: Schema.Types.ObjectId, ref: 'Libro' }],
     deleteImages: [String],

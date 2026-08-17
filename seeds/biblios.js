@@ -1,5 +1,3 @@
-const { coordinates } = require("@maptiler/client");
-
 module.exports.biblioCba = [
     {
         nombre: 'Biblioteca Popular Almafuerte y CAJU',

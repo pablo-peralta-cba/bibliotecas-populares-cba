@@ -6,22 +6,17 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
-const methodOverride = require('method-override');
 const session = require('express-session');
-const flash = require('connect-flash');
 const ExpressError = require('./utilities/expressError');
 const passport = require('passport');
 const localStrategy = require('passport-local');
-const ejsMate = require('ejs-mate');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const MongoStore = require('connect-mongo');
+const cors = require('cors');
 
-// Modelos
-const Biblioteca = require('./modelos/biblioteca');
-const Review = require('./modelos/reviews');
+// Modelos (used by passport)
 const Usuario = require('./modelos/usuario');
-const Libro = require('./modelos/libro');
 
 // Conexión a MongoDB
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/publiclib';
@@ -32,22 +27,31 @@ db.once('open', () => {
   console.log('Database connected');
 });
 
-// Configuración de EJS
-app.engine('ejs', ejsMate);
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
 // Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-const secret = process.env.SECRET || 'chisme';
+// Serve React build output
+app.use(express.static(path.join(__dirname, 'client-dist')));
+
+// CORS configuration for development
+if (process.env.NODE_ENV !== 'production') {
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+  }));
+}
+
+const secret = process.env.SECRET;
+if (!secret && process.env.NODE_ENV === 'production') {
+  throw new Error('SECRET environment variable is required in production');
+}
+const sessionSecret = secret || 'chisme';
 
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
   crypto: {
-    secret: secret,
+    secret: sessionSecret,
   },
 });
 
@@ -58,12 +62,13 @@ store.on('error', function (e) {
 const sessionSetup = {
   store: store,
   name: 'lp_11_10',
-  secret: secret,
+  secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    // secure: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
@@ -114,40 +119,38 @@ app.use(
   })
 );
 
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(Usuario.authenticate()));
 passport.serializeUser(Usuario.serializeUser());
 passport.deserializeUser(Usuario.deserializeUser());
 
-// Middleware para mensajes flash
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
   next();
 });
 
-// Rutas
-const bibliotecas = require('./routes/bibliotecas');
-const reviews = require('./routes/reviews');
-const usuarios = require('./routes/usuarios');
-const libros = require('./routes/libros');
-const info = require('./routes/info');
-app.use('/bibliotecas', bibliotecas);
-app.use('/bibliotecas/:id/reviews', reviews);
-app.use('/', usuarios);
-//app.use('/bibliotecas/:id/libros', libros); // Rutas específicas para libros de cada biblioteca
+// API Routes (for React SPA)
+const apiBibliotecas = require('./routes/api/bibliotecas');
+const apiLibros = require('./routes/api/libros');
+const apiUsuarios = require('./routes/api/usuarios');
+const apiReviews = require('./routes/api/reviews');
+const apiInfo = require('./routes/api/info');
+app.use('/api/bibliotecas', apiBibliotecas);
+app.use('/api/libros', apiLibros);
+app.use('/api', apiUsuarios);
+app.use('/api/bibliotecas/:id/reviews', apiReviews);
+app.use('/api/info', apiInfo);
 
-// Ruta para el catálogo general de libros
-app.use('/libros', libros); // Esta podría ser la ruta general para acceder a todos los libros
-app.use('/info', info);
+app.locals.title = 'Bibliotecas Populares Córdoba';
 
-app.locals.title = 'Bibliotecas Populares Córdoba'; // Establece un valor por defecto global para todas las vistas
-
-app.get('/', (req, res) => {
-  res.render('home', { title: 'Bibliotecas Populares Córdoba' });
+// Catch-all: serve React app for any non-API route
+app.get('*', (req, res, next) => {
+  // Skip API routes — they handle their own responses
+  if (req.path.startsWith('/api')) return next();
+  
+  // Serve React SPA for all other routes
+  res.sendFile(path.join(__dirname, 'client-dist', 'index.html'));
 });
 
 // Middleware para manejar rutas no encontradas
@@ -157,10 +160,11 @@ app.all('*', (req, res, next) => {
 
 // Manejo de errores
 app.use((err, req, res, next) => {
-  // req.flash('error', 'Se encontraron datos erróneos en la búsqueda');
-  // return res.redirect('/bibliotecas');
-  const { statusCode = 500 } = err;
-  res.status(statusCode).render('error', { err });
+  const { statusCode = 500, message = 'Error interno del servidor' } = err;
+  if (req.path.startsWith('/api')) {
+    return res.status(statusCode).json({ error: message, statusCode });
+  }
+  res.redirect(`/error?code=${statusCode}&message=${encodeURIComponent(message)}`);
 });
 
 // Iniciar servidor
