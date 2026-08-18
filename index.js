@@ -27,6 +27,9 @@ db.once('open', () => {
   console.log('Database connected');
 });
 
+// Trust proxy (required for secure cookies behind Render's reverse proxy)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -64,12 +67,11 @@ const sessionSetup = {
   name: 'lp_11_10',
   secret: sessionSecret,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
@@ -164,10 +166,12 @@ app.use((err, req, res, next) => {
   if (req.path.startsWith('/api')) {
     return res.status(statusCode).json({ error: message, statusCode });
   }
-  res.redirect(`/error?code=${statusCode}&message=${encodeURIComponent(message)}`);
+  res.status(statusCode).sendFile(path.join(__dirname, 'client-dist', 'index.html'));
 });
 
-// Iniciar servidor
-app.listen(3000, () => {
-  console.log('App running on port 3000');
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`App running on port ${PORT}`);
 });
