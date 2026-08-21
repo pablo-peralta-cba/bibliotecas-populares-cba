@@ -1,8 +1,8 @@
 const typeStyles = {
-  success: 'bg-green-100 border-green-400 text-green-700',
-  danger: 'bg-red-100 border-red-400 text-red-700',
-  warning: 'bg-yellow-100 border-yellow-400 text-yellow-700',
-  info: 'bg-blue-100 border-blue-400 text-blue-700',
+  success: 'bg-green-50 border-green-400 text-green-800',
+  danger: 'bg-red-50 border-red-400 text-red-800',
+  warning: 'bg-amber-50 border-amber-400 text-amber-800',
+  info: 'bg-orange-50 border-orange-400 text-orange-800',
 };
 
 export default function Alert({
@@ -15,7 +15,7 @@ export default function Alert({
 }) {
   return (
     <div
-      className={`border px-4 py-3 rounded relative ${typeStyles[type] || typeStyles.info} ${className}`}
+      className={`border px-4 py-3 rounded-xl relative ${typeStyles[type] || typeStyles.info} ${className}`}
       role="alert"
       {...props}
     >

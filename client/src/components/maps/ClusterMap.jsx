@@ -47,13 +47,15 @@ export default function ClusterMap({
           'circle-color': [
             'step',
             ['get', 'point_count'],
-            '#00BCD4',
+            '#EA580C',
             10,
-            '#2196F3',
+            '#A33900',
             30,
-            '#3F51B5',
+            '#1C1917',
           ],
-          'circle-radius': ['step', ['get', 'point_count'], 15, 10, 20, 30, 25],
+          'circle-radius': ['step', ['get', 'point_count'], 18, 10, 24, 30, 30],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': 'rgba(255, 255, 255, 0.8)',
         },
       });
 
@@ -67,6 +69,9 @@ export default function ClusterMap({
           'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           'text-size': 12,
         },
+        paint: {
+          'text-color': '#ffffff',
+        },
       });
 
       map.addLayer({
@@ -75,9 +80,9 @@ export default function ClusterMap({
         source: 'bibliotecas',
         filter: ['!', ['has', 'point_count']],
         paint: {
-          'circle-color': '#11b4da',
-          'circle-radius': 4,
-          'circle-stroke-width': 1,
+          'circle-color': '#EA580C',
+          'circle-radius': 8,
+          'circle-stroke-width': 2,
           'circle-stroke-color': '#fff',
         },
       });
@@ -104,7 +109,7 @@ export default function ClusterMap({
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
-        new maptilersdk.Popup()
+        new maptilersdk.Popup({ offset: 15 })
           .setLngLat(coordinates)
           .setHTML(popUpMarkup)
           .addTo(map);
@@ -115,6 +120,14 @@ export default function ClusterMap({
       });
 
       map.on('mouseleave', 'clusters', () => {
+        map.getCanvas().style.cursor = '';
+      });
+
+      map.on('mouseenter', 'unclustered-point', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+
+      map.on('mouseleave', 'unclustered-point', () => {
         map.getCanvas().style.cursor = '';
       });
     });
@@ -130,7 +143,7 @@ export default function ClusterMap({
   return (
     <div
       ref={mapContainer}
-      className={`w-full h-[400px] rounded-lg ${className}`}
+      className={`w-full h-[400px] rounded-xl ${className}`}
       {...props}
     />
   );
