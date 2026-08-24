@@ -30,14 +30,8 @@ export default function Home() {
       <header className="mb-auto">
         <div className="home-nav">
           <nav className="home-nav-container flex justify-center items-center gap-6">
-            <NavLink to="/" className={({ isActive }) => `home-nav-link${isActive ? ' active' : ''}`} end>
-              Inicio
-            </NavLink>
             <NavLink to="/bibliotecas" className={({ isActive }) => `home-nav-link${isActive ? ' active' : ''}`}>
               Bibliotecas
-            </NavLink>
-            <NavLink to="/libros" className={({ isActive }) => `home-nav-link${isActive ? ' active' : ''}`}>
-              Libros
             </NavLink>
             {isAuthenticated ? (
               <button onClick={handleLogout} className="home-nav-button">
