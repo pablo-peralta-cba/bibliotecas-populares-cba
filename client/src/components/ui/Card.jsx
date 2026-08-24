@@ -10,7 +10,7 @@ export default function Card({
 }) {
   return (
     <div
-      className={`bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow overflow-hidden ${className}`}
+      className={`bg-white rounded-xl border border-stone-100 shadow-card hover:shadow-card-hover transition-all duration-200 overflow-hidden ${className}`}
       {...props}
     >
       {imgSrc && (
@@ -20,19 +20,19 @@ export default function Card({
           className="w-full h-48 object-cover"
         />
       )}
-      <div className="p-4">
+      <div className="p-5">
         {title && (
-          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+          <h3 className="text-lg font-semibold text-stone-900 mb-1">
             {title}
           </h3>
         )}
         {subtitle && (
-          <p className="text-sm text-gray-500 mb-2">{subtitle}</p>
+          <p className="text-sm text-stone-500 mb-3">{subtitle}</p>
         )}
         {children}
       </div>
       {footer && (
-        <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+        <div className="px-5 py-4 bg-surface-light border-t border-stone-100">
           {footer}
         </div>
       )}

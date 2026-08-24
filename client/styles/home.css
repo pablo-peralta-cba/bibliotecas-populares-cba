@@ -1,51 +1,91 @@
 .home-cover {
   min-height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  background-image:
+    linear-gradient(to bottom, rgba(28, 25, 23, 0.7), rgba(28, 25, 23, 0.85)),
     url('https://res.cloudinary.com/dj9swckra/image/upload/v1730146104/homepage_hlixih.jpg');
   background-size: cover;
   background-position: center;
-  text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
-  box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 8rem rgba(0, 0, 0, 0.4);
 }
 
 .home-nav {
-  padding-top: 1rem;
+  padding-top: 1.5rem;
   padding-bottom: 1rem;
 }
 
+.home-nav-container {
+  margin: 0 1rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(28, 25, 23, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .home-nav-link {
-  font-weight: 700;
-  color: #a7bafb;
-  border-bottom: 0.25rem solid transparent;
+  font-weight: 500;
+  color: #d6d3d1;
   text-decoration: none;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s;
 }
 
 .home-nav-link:hover {
-  color: rgba(255, 255, 255, 0.5);
-  border-bottom-color: rgba(255, 255, 255, 0.5);
+  color: white;
 }
 
 .home-nav-link.active {
-  color: white;
-  border-bottom-color: white;
+  color: #EA580C;
 }
 
 .home-nav-button {
   background: none;
   cursor: pointer;
   font-family: inherit;
+  font-weight: 500;
+  color: #d6d3d1;
+  transition: color 0.2s;
+}
+
+.home-nav-button:hover {
+  color: white;
+}
+
+.home-nav-auth-link {
+  font-weight: 500;
+  color: #d6d3d1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.home-nav-auth-link:hover {
+  color: white;
+}
+
+.home-nav-auth-btn {
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  background: #EA580C;
+  color: white;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.home-nav-auth-btn:hover {
+  background: #A33900;
 }
 
 .home-title {
   font-size: 2.5rem;
   font-weight: 700;
   line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 @media (min-width: 768px) {
   .home-title {
-    font-size: 3.5rem;
+    font-size: 3.75rem;
   }
 }
 
@@ -55,26 +95,39 @@
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  color: #d6d3d1;
 }
 
 .home-cta {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 2rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #333;
-  background-color: white;
-  border: 2px solid white;
-  border-radius: 0.375rem;
+  color: white;
+  background: #EA580C;
+  border: 2px solid #EA580C;
+  border-radius: 1rem;
   text-decoration: none;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .home-cta:hover {
-  background-color: transparent;
-  color: white;
+  background: #A33900;
+  border-color: #A33900;
+  transform: translateY(-2px);
 }
 
 .home-footer {
   font-size: 0.875rem;
+  color: #a8a29e;
+}
+
+.home-footer a {
+  color: #d6d3d1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.home-footer a:hover {
+  color: #EA580C;
 }

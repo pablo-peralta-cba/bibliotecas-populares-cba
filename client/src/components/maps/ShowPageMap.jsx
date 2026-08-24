@@ -31,13 +31,15 @@ export default function ShowPageMap({
 
     mapInstance.current = map;
 
-    const marker = new maptilersdk.Marker()
+    const markerColor = '#EA580C';
+
+    const marker = new maptilersdk.Marker({ color: markerColor })
       .setLngLat([longitude, latitude])
       .setPopup(
-        new maptilersdk.Popup({ offset: 25 }).setHTML(
-          `<div class="p-2">
-            <h3 class="font-bold text-gray-900">${title || ''}</h3>
-            ${locationText ? `<p class="text-gray-600 text-sm">${locationText}</p>` : ''}
+        new maptilersdk.Popup({ offset: 25, className: 'lumina-popup' }).setHTML(
+          `<div style="padding:8px;">
+            <h3 style="font-weight:600;color:#1C1917;margin:0 0 4px;">${title || ''}</h3>
+            ${locationText ? `<p style="color:#78716c;font-size:13px;margin:0;">${locationText}</p>` : ''}
           </div>`
         )
       )

@@ -81,7 +81,7 @@ export default function StarRating({
           aria-checked={index === value}
           aria-label={`${index} star${index !== 1 ? 's' : ''}`}
           tabIndex={readonly ? -1 : 0}
-          className={`p-0 border-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 rounded ${
+          className={`p-0 border-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-primary rounded ${
             readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110 transition-transform'
           }`}
           onMouseEnter={() => handleMouseEnter(index)}

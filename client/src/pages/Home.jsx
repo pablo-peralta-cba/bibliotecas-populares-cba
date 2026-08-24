@@ -28,25 +28,22 @@ export default function Home() {
   return (
     <div className="home-cover flex flex-col text-center text-white">
       <header className="mb-auto">
-        <div>
-          <nav className="home-nav flex justify-center gap-6">
-            <NavLink to="/" className={({ isActive }) => `home-nav-link${isActive ? ' active' : ''}`} end>
-              Home
-            </NavLink>
+        <div className="home-nav">
+          <nav className="home-nav-container flex justify-center items-center gap-6">
             <NavLink to="/bibliotecas" className={({ isActive }) => `home-nav-link${isActive ? ' active' : ''}`}>
               Bibliotecas
             </NavLink>
             {isAuthenticated ? (
-              <button onClick={handleLogout} className="home-nav-link home-nav-button">
-                Logout
+              <button onClick={handleLogout} className="home-nav-button">
+                Cerrar sesión
               </button>
             ) : (
               <>
-                <NavLink to="/login" className={({ isActive }) => `home-nav-link${isActive ? ' active' : ''}`}>
-                  Login
+                <NavLink to="/login" className="home-nav-auth-link">
+                  Iniciar sesión
                 </NavLink>
-                <NavLink to="/registro" className={({ isActive }) => `home-nav-link${isActive ? ' active' : ''}`}>
-                  Registrate
+                <NavLink to="/registro" className="home-nav-auth-btn">
+                  Registrarse
                 </NavLink>
               </>
             )}
@@ -54,29 +51,27 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="px-3 flex-grow flex flex-col items-center justify-center">
+      <main className="px-4 flex-grow flex flex-col items-center justify-center">
         <h1 className="home-title mb-4">
           Bibliotecas Populares Córdoba
         </h1>
-        <p className="home-subtitle mb-8">
-          Encontrá y contactate con todas las bibliotecas populares de la
-          provincia<br />
-          Accedé a variados catálogos de libros
+        <p className="home-subtitle mb-10">
+          Descubrí el corazón cultural de tu comunidad.<br />
+          Encontrá y contactate con todas las bibliotecas populares de la provincia de Córdoba.
         </p>
         <NavLink to="/bibliotecas" className="home-cta">
-          Ver bibliotecas
+          Explorar bibliotecas
         </NavLink>
       </main>
 
-      <footer className="home-footer py-3 mt-auto">
-        <div className="flex flex-col items-center">
-          <span className="text-white">
-            &copy; Bibliotecas Populares Córdoba — {new Date().getFullYear()}
+      <footer className="home-footer py-6 mt-auto">
+        <div className="flex flex-col items-center gap-2">
+          <span>
+            &copy; {new Date().getFullYear()} Bibliotecas Populares Córdoba
           </span>
-          <span className="text-white mt-1">
-            Desarrollado con ♥ por{' '}
+          <span>
+            Desarrollado con <span className="text-primary">♥</span> por{' '}
             <a
-              className="text-dark hover:underline"
               href="https://www.linkedin.com/in/pablo-federico-peralta/"
               target="_blank"
               rel="noopener noreferrer"

@@ -14,7 +14,7 @@ const TextArea = forwardRef(function TextArea(
   const textareaId = id || props.name;
   const borderColor = error
     ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-    : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500';
+    : 'border-stone-300 focus:ring-primary focus:border-primary';
 
   return (
     <div className={`mb-4 ${className}`}>
@@ -31,7 +31,7 @@ const TextArea = forwardRef(function TextArea(
         id={textareaId}
         rows={rows}
         className={`
-          w-full px-3 py-2 border rounded-lg resize-y
+          w-full px-4 py-2.5 border rounded-xl resize-y
           focus:outline-none focus:ring-2 focus:ring-offset-0
           transition-colors duration-200
           ${borderColor}

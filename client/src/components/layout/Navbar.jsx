@@ -12,18 +12,88 @@ export default function Navbar() {
     setIsOpen(false);
   };
 
+  const navLinkClass = ({ isActive }) =>
+    `relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+      isActive
+        ? 'text-primary'
+        : 'text-stone-300 hover:text-white'
+    }`;
+
   return (
-    <nav className="bg-primary text-white sticky top-0 z-50 shadow-lg">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-3">
-          <Link to="/" className="text-xl font-bold hover:text-blue-200">
-            Bibliotecas Populares
+    <nav className="sticky top-0 z-50">
+      <div className="mx-4 mt-4">
+        <div className="flex items-center justify-between px-6 py-4 bg-surface-dark/90 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl">
+          <Link to="/" className="text-xl font-bold text-white tracking-tight">
+            Bibliotecas <span className="text-primary">Populares</span> Córdoba
           </Link>
-          
-          {/* Mobile menu button */}
+
+          <div className="hidden md:flex items-center gap-1">
+            <NavLink to="/" className={navLinkClass}>
+              Inicio
+            </NavLink>
+
+            <div className="relative group">
+              <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-stone-300 hover:text-white transition-colors duration-200">
+                Bibliotecas
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 bg-surface-dark/95 backdrop-blur-md rounded-xl border border-white/10 shadow-xl">
+                <NavLink to="/bibliotecas" className="block px-4 py-3 text-sm text-stone-300 hover:text-white hover:bg-white/5 rounded-t-xl transition-colors">
+                  Ver bibliotecas
+                </NavLink>
+                {isVerified && (
+                  <NavLink to="/bibliotecas/nueva" className="block px-4 py-3 text-sm text-stone-300 hover:text-white hover:bg-white/5 transition-colors">
+                    Agregar biblioteca
+                  </NavLink>
+                )}
+                <NavLink to="/bibliotecas/que-es" className="block px-4 py-3 text-sm text-stone-300 hover:text-white hover:bg-white/5 transition-colors">
+                  Qué es una biblioteca
+                </NavLink>
+                <NavLink to="/bibliotecas/requisitos" className="block px-4 py-3 text-sm text-stone-300 hover:text-white hover:bg-white/5 rounded-b-xl transition-colors">
+                  Requisitos
+                </NavLink>
+              </div>
+            </div>
+
+            <NavLink to="/info/legislacion" className={navLinkClass}>
+              Legislación
+            </NavLink>
+
+            <NavLink to="/libros" className={navLinkClass}>
+              Libros
+            </NavLink>
+
+            <NavLink to="/contacto" className={navLinkClass}>
+              Contacto
+            </NavLink>
+          </div>
+
+          <div className="hidden md:flex items-center gap-3">
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors duration-200"
+              >
+                Cerrar sesión
+              </button>
+            ) : (
+              <>
+                <NavLink to="/login" className="px-4 py-2 text-sm font-medium text-stone-300 hover:text-white transition-colors">
+                  Iniciar sesión
+                </NavLink>
+                <NavLink to="/registro" className="px-5 py-2 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors duration-200">
+                  Registrarse
+                </NavLink>
+              </>
+            )}
+          </div>
+
           <button
             className="md:hidden text-white focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isOpen ? (
@@ -33,110 +103,57 @@ export default function Navbar() {
               )}
             </svg>
           </button>
-
-          {/* Desktop menu */}
-          <div className="hidden md:flex items-center space-x-4">
-            <NavLink to="/" className={({ isActive }) => isActive ? 'text-blue-200' : 'hover:text-blue-200'}>
-              Inicio
-            </NavLink>
-            
-            <div className="relative group">
-              <button className="hover:text-blue-200 flex items-center">
-                Bibliotecas
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className="absolute hidden group-hover:block bg-white text-gray-800 shadow-lg rounded mt-1 min-w-[200px]">
-                <NavLink to="/bibliotecas" className="block px-4 py-2 hover:bg-gray-100">
-                  Ver bibliotecas
-                </NavLink>
-                {isVerified && (
-                  <NavLink to="/bibliotecas/nueva" className="block px-4 py-2 hover:bg-gray-100">
-                    Agregar biblioteca
-                  </NavLink>
-                )}
-                <NavLink to="/bibliotecas/que-es" className="block px-4 py-2 hover:bg-gray-100">
-                  Que es una biblioteca
-                </NavLink>
-                <NavLink to="/bibliotecas/requisitos" className="block px-4 py-2 hover:bg-gray-100">
-                  Requisitos
-                </NavLink>
-              </div>
-            </div>
-
-            <NavLink to="/info/legislacion" className={({ isActive }) => isActive ? 'text-blue-200' : 'hover:text-blue-200'}>
-              Legislacion
-            </NavLink>
-            
-            <NavLink to="/libros" className={({ isActive }) => isActive ? 'text-blue-200' : 'hover:text-blue-200'}>
-              Libros
-            </NavLink>
-            
-            <NavLink to="/contacto" className={({ isActive }) => isActive ? 'text-blue-200' : 'hover:text-blue-200'}>
-              Contacto
-            </NavLink>
-
-            {isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className="bg-white text-primary px-4 py-2 rounded hover:bg-blue-100"
-              >
-                Logout
-              </button>
-            ) : (
-              <>
-                <NavLink to="/login" className={({ isActive }) => isActive ? 'text-blue-200' : 'hover:text-blue-200'}>
-                  Login
-                </NavLink>
-                <NavLink to="/registro" className="bg-white text-primary px-4 py-2 rounded hover:bg-blue-100">
-                  Registrate
-                </NavLink>
-              </>
-            )}
-          </div>
         </div>
 
-        {/* Mobile menu */}
         {isOpen && (
-          <div className="md:hidden pb-4">
-            <NavLink to="/" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-              Inicio
-            </NavLink>
-            <NavLink to="/bibliotecas" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-              Bibliotecas
-            </NavLink>
-            {isVerified && (
-              <NavLink to="/bibliotecas/nueva" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-                Agregar biblioteca
+          <div className="md:hidden mx-4 mt-2 p-4 bg-surface-dark/90 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl">
+            <div className="flex flex-col gap-1">
+              <NavLink to="/" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                Inicio
               </NavLink>
-            )}
-            <NavLink to="/info/legislacion" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-              Legislacion
-            </NavLink>
-            <NavLink to="/libros" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-              Libros
-            </NavLink>
-            <NavLink to="/contacto" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-              Contacto
-            </NavLink>
-            {isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left py-2 hover:text-blue-200"
-              >
-                Logout
-              </button>
-            ) : (
-              <>
-                <NavLink to="/login" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-                  Login
+              <NavLink to="/bibliotecas" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                Ver bibliotecas
+              </NavLink>
+              {isVerified && (
+                <NavLink to="/bibliotecas/nueva" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                  Agregar biblioteca
                 </NavLink>
-                <NavLink to="/registro" className="block py-2 hover:text-blue-200" onClick={() => setIsOpen(false)}>
-                  Registrate
-                </NavLink>
-              </>
-            )}
+              )}
+              <NavLink to="/bibliotecas/que-es" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                Qué es una biblioteca
+              </NavLink>
+              <NavLink to="/bibliotecas/requisitos" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                Requisitos
+              </NavLink>
+              <NavLink to="/info/legislacion" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                Legislación
+              </NavLink>
+              <NavLink to="/libros" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                Libros
+              </NavLink>
+              <NavLink to="/contacto" className={navLinkClass} onClick={() => setIsOpen(false)}>
+                Contacto
+              </NavLink>
+            </div>
+            <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-2">
+              {isAuthenticated ? (
+                <button
+                  onClick={handleLogout}
+                  className="w-full px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors"
+                >
+                  Cerrar sesión
+                </button>
+              ) : (
+                <>
+                  <NavLink to="/login" className="block text-center px-4 py-2 text-sm font-medium text-stone-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors" onClick={() => setIsOpen(false)}>
+                    Iniciar sesión
+                  </NavLink>
+                  <NavLink to="/registro" className="block text-center px-4 py-2 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors" onClick={() => setIsOpen(false)}>
+                    Registrarse
+                  </NavLink>
+                </>
+              )}
+            </div>
           </div>
         )}
       </div>
